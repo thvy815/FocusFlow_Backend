@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // Phương thức tìm người dùng theo tên đăng nhập (username).
-    User findByUsername(String username);
+    // Phương thức tìm người dùng theo email.
+    User findByEmail(String email);
 }

@@ -20,11 +20,10 @@ public class User {
     // Constructors, getters, setters
     public User() {}
 
-    public User(String username, String password, String email, String avatarUrl) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.avatarUrl = avatarUrl;
     }
 
     public Long getId() {

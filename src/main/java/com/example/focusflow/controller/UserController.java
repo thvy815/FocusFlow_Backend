@@ -24,10 +24,10 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    // API để lấy thông tin người dùng theo tên đăng nhập
-    @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) {
-        return userService.getUserByUsername(username);
+    // API để lấy thông tin người dùng theo email
+    @GetMapping("/{email}")
+    public User getUser(@PathVariable String email) {
+        return userService.getUserByEmail(email);
     }
 
     // API để xóa người dùng theo id

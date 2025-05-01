@@ -23,8 +23,8 @@ public class UserService {
     }
 
     // Phương thức trả về người dùng theo tên đăng nhập
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     // Phương thức lưu người dùng vào cơ sở dữ liệu
