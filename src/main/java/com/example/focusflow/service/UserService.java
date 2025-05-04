@@ -27,13 +27,21 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    // Phương thức kiểm tra mật khẩu người dùng
+    public boolean checkPassword(User user, String password) {
+        return user != null && user.getPassword().equals(password);
+    }
+
     // Phương thức lưu người dùng vào cơ sở dữ liệu
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    // Phương thức xóa người dùng theo id
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    // Phương thức xóa người dùng theo email
+    public void deleteUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
 }
