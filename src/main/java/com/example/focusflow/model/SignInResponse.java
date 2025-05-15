@@ -3,12 +3,14 @@ package com.example.focusflow.model;
 public class SignInResponse {
 
     private String token;
+    private int userId;
 
     // Constructors, getters, setters
     public SignInResponse() {}
 
-    public SignInResponse(String token) {
+    public SignInResponse(String token, int userId) {
         this.token = token;
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -17,5 +19,13 @@ public class SignInResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
