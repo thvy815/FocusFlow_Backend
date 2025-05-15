@@ -1,7 +1,5 @@
 package com.example.focusflow.entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,13 +26,13 @@ public class Task {
     private String description;
 
     @Column(name = "due_date")
-    private LocalDate dueDate;
+    private String dueDate;
 
-    @Column(name = "reminder_date")
-    private LocalDate reminderDate;
+    @Column(name = "time")
+    private String time;
 
-    @Column(name = "is_completed", columnDefinition = "BOOLEAN")
-    private Boolean isCompleted = false;
+    @Column(name = "tag")
+    private String tag;
 
     @Column(name = "priority")
     private Integer priority;
@@ -42,24 +40,28 @@ public class Task {
     @Column(name = "repeat_style")
     private String repeatStyle;
 
-    @Column(name = "is_deleted", columnDefinition = "BOOLEAN")
-    private Boolean isDeleted = false;
+    @Column(name = "reminder_style")
+    private String reminderStyle;
+
+    @Column(name = "is_completed", columnDefinition = "BOOLEAN")
+    private Boolean isCompleted = false;
 
     // Constructorsgetters, setters
     public Task() {}
 
     public Task(Integer id, Integer userId, String title, String description,
-            LocalDate dueDate, LocalDate reminderDate, Integer priority, String repeatStyle) {
+                String dueDate, String time, String tag, Integer priority, String repeatStyle, String reminderStyle) {
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.reminderDate = reminderDate;
-        this.isCompleted = false;
+        this.time = time;
+        this.tag = tag;
         this.priority = priority;
         this.repeatStyle = repeatStyle;
-        this.isDeleted = false;
+        this.reminderStyle = reminderStyle;
+        this.isCompleted = false;
     }
 
     // Getters, setters
@@ -95,28 +97,27 @@ public class Task {
         this.description = description;
     }
     
-    public LocalDate getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
     
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
     
-    public LocalDate getReminderDate() {
-        return reminderDate;
+    public String getTime() {
+        return time;
+    }
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
     
-    public void setReminderDate(LocalDate reminderDate) {
-        this.reminderDate = reminderDate;
-    }
-    
-    public Boolean getIsCompleted() {
-        return isCompleted;
-    }
-    
-    public void setIsCompleted(Boolean isCompleted) {
-        this.isCompleted = isCompleted;
+    public String getTag() {
+        return tag;
     }
     
     public Integer getPriority() {
@@ -134,12 +135,20 @@ public class Task {
     public void setRepeatStyle(String repeatStyle) {
         this.repeatStyle = repeatStyle;
     }
-    
-    public Boolean getIsDeleted() {
-        return isDeleted;
+
+    public String getReminderStyle() {
+        return reminderStyle;
     }
     
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    } 
+    public void setReminderStyle(String reminderStyle) {
+        this.reminderStyle = reminderStyle;
+    }
+
+    public Boolean getIsCompleted() {
+        return isCompleted;
+    }
+    
+    public void setIsCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 }

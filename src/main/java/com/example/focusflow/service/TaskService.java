@@ -17,7 +17,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasksByUserId(Integer userId) {
-        return taskRepository.findByUserIdAndIsDeletedFalse(userId);
+        return taskRepository.findByUserId(userId);
     }
 
     public Optional<Task> getTaskById(Integer id) {
@@ -33,9 +33,6 @@ public class TaskService {
     }
 
     public void deleteTask(Integer id) {
-        taskRepository.findById(id).ifPresent(task -> {
-            task.setIsDeleted(true);
-            taskRepository.save(task);
-        });
+        taskRepository.deleteById(id);
     }
 }
