@@ -11,31 +11,34 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+        @Autowired
+        private JwtFilter jwtFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // Tắt CSRF nếu không cần thiết lập bảo mật CSRF
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/signin", "/api/user/create").permitAll() // Cho
-                                                                                         // phép
-                                                                                         // truy
-                                                                                         // cập mà
-                                                                                         // không
-                                                                                         // cần xác
-                                                                                         // thựcthực
-                        .anyRequest().authenticated())
-                .httpBasic(basic -> basic.disable()) // Tắt xác thực cơ bản (basic auth) vì bạn đang dùng JWT
-                .formLogin(login -> login.disable()); // Không cần form login cho API
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable()) // Tắt CSRF nếu không cần thiết lập bảo mật CSRF
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(authz -> authz
+                                                .requestMatchers("/auth/signin", "/api/user/create",
+                                                                "/api/pomodoro/**")
+                                                .permitAll() // Cho
+                                                // phép
+                                                // truy
+                                                // cập mà
+                                                // không
+                                                // cần xác
+                                                // thựcthực
+                                                .anyRequest().authenticated())
+                                .httpBasic(basic -> basic.disable()) // Tắt xác thực cơ bản (basic auth) vì bạn đang
+                                                                     // dùng JWT
+                                .formLogin(login -> login.disable()); // Không cần form login cho API
 
-        // Thêm JwtAuthenticationFilter trước khi kiểm tra
-        // UsernamePasswordAuthentication
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                // Thêm JwtAuthenticationFilter trước khi kiểm tra
+                // UsernamePasswordAuthentication
+                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

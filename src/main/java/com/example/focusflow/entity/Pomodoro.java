@@ -2,97 +2,122 @@ package com.example.focusflow.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
-
-// import jakarta.persistence.Column;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "pomodoro")
 public class Pomodoro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    // private Long userId;
-    // private Long taskId;
-    private Timestamp createdAt;
+    @Column(name = "user_id", nullable = false) // nguoi dung lam pomodoro
+    private Integer userId;
+
+    @Column(name = "task_id", nullable = false) // task dung pomodoro
+    private Integer taskId;
+
+    @Column(name = "start_at") // thoi gian bat dau lam pomodoro
+    private Timestamp startAt;
+
+    @Column(name = "end_at") // thoi gian ket thuc lam pomodoro
     private Timestamp endAt;
-    private int totalTime;
-    private boolean isDeleted;
-    private LocalDate sessionDate;
 
-    @OneToMany(mappedBy = "pomodoro", cascade = CascadeType.ALL)
-    private List<PomodoroDetail> details = new ArrayList<>();
+    @Column(name = "due_date") // ngay chay pomodo_id nay
+    private LocalDate dueDate;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    @Column(name = "total_time") // tong thoi gian lam pomo
+    private Integer totalTime;
+
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
+    private Boolean isDeleted = false;
+
+    // Constructorsgetters, setters
+    public Pomodoro() {
     }
 
-    public void setId(Long id) {
+    public Pomodoro(int id, int userId, int taskId, Timestamp startAt, Timestamp endAt, LocalDate dueDate,
+            int totalTime, Boolean isDeleted) {
+        this.id = id;
+        this.userId = userId;
+        this.taskId = taskId;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.dueDate = dueDate;
+        this.totalTime = totalTime;
+        this.isDeleted = isDeleted;
+    }
+    // Getter, setter
+
+    public void setID(int id) {
         this.id = id;
     }
 
-    // public Long getUserId() {
-    // return userId;
-    // }
-
-    // public void setUserId(Long userId) {
-    // this.userId = userId;
-    // }
-
-    // public Long getTaskId() {
-    // return taskId;
-    // }
-
-    // public void setTaskId(Long taskId) {
-    // this.taskId = taskId;
-    // }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    public int getID() {
+        return id;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public Timestamp getEndAt() {
-        return endAt;
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setStartAt(Timestamp startAt) {
+        this.startAt = startAt;
+    }
+
+    public Timestamp getStartAt() {
+        return startAt;
     }
 
     public void setEndAt(Timestamp endAt) {
         this.endAt = endAt;
     }
 
-    public Integer getTotalTime() {
-        return totalTime;
+    public Timestamp getEndAt() {
+        return endAt;
     }
 
-    public void setTotalTime(Integer totalTime) {
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setTotalTime(int totalTime) {
         this.totalTime = totalTime;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
+    public int getTotalTime() {
+        return totalTime;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
+    public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
-    public LocalDate getSessionDate() {
-        return sessionDate;
+    public boolean getDeleted() {
+        return isDeleted;
     }
 
-    public void setSessionDate(LocalDate sDate) {
-        sessionDate = sDate;
-    }
 }

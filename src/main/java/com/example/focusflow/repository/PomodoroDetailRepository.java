@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.example.focusflow.entity.PomodoroDetail;
 
 @Repository
-public interface PomodoroDetailRepository extends JpaRepository<PomodoroDetail, Long> {
-    List<PomodoroDetail> findByPomodoroId(Long pomoId);
+public interface PomodoroDetailRepository extends JpaRepository<PomodoroDetail, Integer> {
+    List<PomodoroDetail> findByPomodoroIdAndIsDeletedFalse(Integer pomodoroId);
 }

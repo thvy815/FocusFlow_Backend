@@ -1,58 +1,97 @@
 package com.example.focusflow.entity;
 
-import java.sql.Timestamp;
+import java.security.Timestamp;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "pomodoroDetail")
 public class PomodoroDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private int durations;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    @Column(name = "pomodoro_id", nullable = false) // id pomodoro chua details
+    private Integer pomodoroId;
 
-    @ManyToOne
-    @JoinColumn(name = "pomo_id")
-    private Pomodoro pomodoro;
+    @Column(name = "start_at") // thoi gian bat dau
+    private Timestamp startAt;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    @Column(name = "end_at") // thoi gian ket thuc
+    private Timestamp endAt;
+
+    @Column(name = "total_time") // tong thoi gian lam detail
+    private Integer totalTime;
+
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
+    private Boolean isDeleted = false;
+
+    // Constructorsgetters, setters
+    public PomodoroDetail() {
     }
 
-    public void setId(Long id) {
+    public PomodoroDetail(int id, int pomodoroId, Timestamp startAt, Timestamp endAt, int totalTime) {
+        this.id = id;
+        this.pomodoroId = pomodoroId;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.totalTime = totalTime;
+    }
+    // Getter, setter
+
+    public void setID(int id) {
         this.id = id;
     }
 
-    public int getDurations() {
-        return durations;
+    public int getID() {
+        return id;
     }
 
-    public void setDurations(int durations) {
-        this.durations = durations;
+    public void setPomodoroId(int pomodoroId) {
+        this.pomodoroId = pomodoroId;
     }
 
-    public Timestamp getStartTime() {
-        return startTime;
+    public int getPomodoroId() {
+        return pomodoroId;
     }
 
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
+    public void setStartAt(Timestamp startAt) {
+        this.startAt = startAt;
     }
 
-    public Timestamp getEndTime() {
-        return endTime;
+    public Timestamp getStartAt() {
+        return startAt;
     }
 
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
+    public void setEndAt(Timestamp endAt) {
+        this.endAt = endAt;
     }
+
+    public Timestamp getEndAt() {
+        return endAt;
+    }
+
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public int getTotalTime() {
+        return totalTime;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean getDeleted() {
+        return isDeleted;
+    }
+
 }

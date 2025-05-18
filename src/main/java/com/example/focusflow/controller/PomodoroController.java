@@ -1,9 +1,8 @@
 package com.example.focusflow.controller;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,32 +11,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.focusflow.entity.Pomodoro;
-import com.example.focusflow.model.PomodoroRequest;
 import com.example.focusflow.service.PomodoroService;
 
+import com.example.focusflow.entity.Pomodoro;
+
 @RestController
-@RequestMapping("/api/pomodoros")
+@RequestMapping("/api/pomodoro")
 public class PomodoroController {
-    private final PomodoroService pomoService;
+    private final PomodoroService pomodoroService;
 
-    public PomodoroController(PomodoroService pomoService) {
-        this.pomoService = pomoService;
+    public PomodoroController(PomodoroService pomodoroService) {
+        this.pomodoroService = pomodoroService;
     }
 
-    @PostMapping
-    public ResponseEntity<Pomodoro> create(@RequestBody PomodoroRequest request) {
-        return ResponseEntity.ok(pomoService.createPomodoro(request));
-    }
-
-    @GetMapping
-    public List<Pomodoro> getAll() {
-        return pomoService.getAllPomodoros();
+    @GetMapping("/user/{userId}")
+    public List<Pomodoro> getTasksByUser(@PathVariable Integer userId) {
+        return pomodoroService.getAllPomodoroByUserId(userId);
     }
 
     @GetMapping("/{id}")
-    public Pomodoro getById(@PathVariable Long id) {
-        return pomoService.getPomodoroById(id);
+    public Optional<Pomodoro> getTaskById(@PathVariable Integer id) {
+        return pomodoroService.getPomodoroById(id);
     }
 
+    @PostMapping
+    public Pomodoro createPomodoro(@RequestBody Pomodoro pomodoro) {
+        return pomodoroService.createPomodoro(pomodoro);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePomodoro(@PathVariable Integer id) {
+        pomodoroService.deletePomodoro(id);
+    }
 }
