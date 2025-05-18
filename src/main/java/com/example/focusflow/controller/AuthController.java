@@ -27,7 +27,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody SignInRequest request) {
         User user = userService.getUserByEmail(request.getEmail());
         if (user != null && userService.checkPassword(user, request.getPassword())) {
-            String token = jwtUtil.generateToken(user.getEmail());
+            String token = jwtUtil.generateToken(user.getEmail(), request.getRememberMe());
+            
             SignInResponse response = new SignInResponse(token, user.getId());
             return ResponseEntity.ok(response);
         }

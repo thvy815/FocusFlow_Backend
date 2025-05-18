@@ -4,6 +4,9 @@ import com.example.focusflow.entity.User;
 import com.example.focusflow.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,11 @@ public class UserService {
     // Phương thức trả về người dùng theo tên đăng nhập
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    // Phương thức trả về người dùng theo id
+    public Optional<User> getUserById(Integer id) {
+        return userRepository.findById(id);
     }
 
     // Phương thức kiểm tra mật khẩu người dùng

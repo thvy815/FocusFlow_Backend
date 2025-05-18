@@ -30,11 +30,12 @@ public class JwtUtil {
     }
 
     // Tạo JWT token cho người dùng với email
-     public String generateToken(String email) {
+     public String generateToken(String email, boolean rememberMe) {
+        long tokenDuration = rememberMe ? 14 * 24 * 60 * 60 * 1000L : expirationTime; // 14 ngày hoặc mặc định
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenDuration))
                 .signWith(secretKey)
                 .compact();
     }

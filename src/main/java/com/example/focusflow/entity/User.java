@@ -26,6 +26,9 @@ public class User {
 
     @Column(name = "avatar_url")
     private String avatarUrl;
+
+    @Column(name = "fcm_token")
+    private String fcmToken;
     
     // Constructors
     public User() {}
@@ -75,5 +78,13 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }
