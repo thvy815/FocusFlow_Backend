@@ -25,13 +25,13 @@ public class PomodoroDetailController {
         this.pomodoroDetailService = pomodoroDetailService;
     }
 
-    @GetMapping("/pomodoros/{pomodoroId}")
-    public List<PomodoroDetail> getTasksByUser(@PathVariable Integer pomodoroId) {
+    @GetMapping("/pomodoro/{pomodoroId}")
+    public List<PomodoroDetail> getPomodoroDetailsByPomodoro(@PathVariable Integer pomodoroId) {
         return pomodoroDetailService.getAllPomodoroByPomodoroId(pomodoroId);
     }
 
     @GetMapping("/{id}")
-    public Optional<PomodoroDetail> getTaskById(@PathVariable Integer id) {
+    public Optional<PomodoroDetail> getPomodoroDetailById(@PathVariable Integer id) {
         return pomodoroDetailService.getPomodoroDetailById(id);
     }
 

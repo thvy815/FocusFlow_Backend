@@ -34,7 +34,7 @@ public class Pomodoro {
     private LocalDate dueDate;
 
     @Column(name = "total_time") // tong thoi gian lam pomo
-    private Integer totalTime;
+    private long totalTime;
 
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
     private Boolean isDeleted = false;
@@ -44,7 +44,7 @@ public class Pomodoro {
     }
 
     public Pomodoro(int id, int userId, int taskId, Timestamp startAt, Timestamp endAt, LocalDate dueDate,
-            int totalTime, Boolean isDeleted) {
+            long totalTime, Boolean isDeleted) {
         this.id = id;
         this.userId = userId;
         this.taskId = taskId;
@@ -52,6 +52,15 @@ public class Pomodoro {
         this.endAt = endAt;
         this.dueDate = dueDate;
         this.totalTime = totalTime;
+        this.isDeleted = isDeleted;
+    }
+
+    public Pomodoro(int id, int userId, int taskId, Timestamp startAt, LocalDate dueDate, Boolean isDeleted) {
+        this.id = id;
+        this.userId = userId;
+        this.taskId = taskId;
+        this.startAt = startAt;
+        this.dueDate = dueDate;
         this.isDeleted = isDeleted;
     }
     // Getter, setter
@@ -104,11 +113,11 @@ public class Pomodoro {
         return dueDate;
     }
 
-    public void setTotalTime(int totalTime) {
+    public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
     }
 
-    public int getTotalTime() {
+    public long getTotalTime() {
         return totalTime;
     }
 

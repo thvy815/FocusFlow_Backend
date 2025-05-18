@@ -1,7 +1,6 @@
 package com.example.focusflow.entity;
 
-import java.security.Timestamp;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +27,7 @@ public class PomodoroDetail {
     private Timestamp endAt;
 
     @Column(name = "total_time") // tong thoi gian lam detail
-    private Integer totalTime;
+    private long totalTime;
 
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
     private Boolean isDeleted = false;
@@ -37,7 +36,7 @@ public class PomodoroDetail {
     public PomodoroDetail() {
     }
 
-    public PomodoroDetail(int id, int pomodoroId, Timestamp startAt, Timestamp endAt, int totalTime) {
+    public PomodoroDetail(int id, int pomodoroId, Timestamp startAt, Timestamp endAt, long totalTime) {
         this.id = id;
         this.pomodoroId = pomodoroId;
         this.startAt = startAt;
@@ -78,11 +77,11 @@ public class PomodoroDetail {
         return endAt;
     }
 
-    public void setTotalTime(int totalTime) {
+    public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
     }
 
-    public int getTotalTime() {
+    public long getTotalTime() {
         return totalTime;
     }
 

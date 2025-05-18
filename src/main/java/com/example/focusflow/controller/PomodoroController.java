@@ -25,8 +25,13 @@ public class PomodoroController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Pomodoro> getTasksByUser(@PathVariable Integer userId) {
+    public List<Pomodoro> getPomodoroByUser(@PathVariable Integer userId) {
         return pomodoroService.getAllPomodoroByUserId(userId);
+    }
+
+    @GetMapping("/tasks/{taskId}")
+    public List<Pomodoro> getPomodoroByTasks(@PathVariable Integer taskId) {
+        return pomodoroService.getAllPomodoroByTaskId(taskId);
     }
 
     @GetMapping("/{id}")

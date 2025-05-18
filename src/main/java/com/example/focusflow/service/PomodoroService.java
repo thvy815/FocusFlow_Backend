@@ -20,6 +20,10 @@ public class PomodoroService {
         return pomodoroRepository.findByUserIdAndIsDeletedFalse(userId);
     }
 
+    public List<Pomodoro> getAllPomodoroByTaskId(Integer taskId) {
+        return pomodoroRepository.findByTaskIdAndIsDeletedFalse(taskId);
+    }
+
     public Optional<Pomodoro> getPomodoroById(Integer id) {
         return pomodoroRepository.findById(id);
     }
