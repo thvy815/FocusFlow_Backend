@@ -1,5 +1,6 @@
 package com.example.focusflow.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.focusflow.repository.PomodoroRepository;
 import com.example.focusflow.entity.Pomodoro;
+import com.example.focusflow.entity.Task;
 
 @Service
 public class PomodoroService {
@@ -38,4 +40,9 @@ public class PomodoroService {
             pomodoroRepository.save(pomodoro);
         });
     }
+
+    public Pomodoro updatePomodoro(Pomodoro pomodoro) {
+        return pomodoroRepository.save(pomodoro);
+    }
+
 }

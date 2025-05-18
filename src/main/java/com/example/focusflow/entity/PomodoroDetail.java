@@ -1,6 +1,6 @@
 package com.example.focusflow.entity;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,14 +17,20 @@ public class PomodoroDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "user_id", nullable = false) // id pomodoro chua details
+    private Integer userId;
+
+    @Column(name = "task_id", nullable = false) // id pomodoro chua details
+    private Integer taskId;
+
     @Column(name = "pomodoro_id", nullable = false) // id pomodoro chua details
     private Integer pomodoroId;
 
     @Column(name = "start_at") // thoi gian bat dau
-    private Timestamp startAt;
+    private Time startAt;
 
     @Column(name = "end_at") // thoi gian ket thuc
-    private Timestamp endAt;
+    private Time endAt;
 
     @Column(name = "total_time") // tong thoi gian lam detail
     private long totalTime;
@@ -36,12 +42,16 @@ public class PomodoroDetail {
     public PomodoroDetail() {
     }
 
-    public PomodoroDetail(int id, int pomodoroId, Timestamp startAt, Timestamp endAt, long totalTime) {
+    public PomodoroDetail(int id, int userId, int taskId, int pomodoroId, Time startAt, Time endAt, long totalTime,
+            boolean is_deleted) {
         this.id = id;
+        this.userId = userId;
+        this.taskId = taskId;
         this.pomodoroId = pomodoroId;
         this.startAt = startAt;
         this.endAt = endAt;
         this.totalTime = totalTime;
+        this.isDeleted = is_deleted;
     }
     // Getter, setter
 
@@ -53,6 +63,22 @@ public class PomodoroDetail {
         return id;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
     public void setPomodoroId(int pomodoroId) {
         this.pomodoroId = pomodoroId;
     }
@@ -61,19 +87,19 @@ public class PomodoroDetail {
         return pomodoroId;
     }
 
-    public void setStartAt(Timestamp startAt) {
+    public void setStartAt(Time startAt) {
         this.startAt = startAt;
     }
 
-    public Timestamp getStartAt() {
+    public Time getStartAt() {
         return startAt;
     }
 
-    public void setEndAt(Timestamp endAt) {
+    public void setEndAt(Time endAt) {
         this.endAt = endAt;
     }
 
-    public Timestamp getEndAt() {
+    public Time getEndAt() {
         return endAt;
     }
 

@@ -1,5 +1,6 @@
 package com.example.focusflow.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ public interface PomodoroRepository extends JpaRepository<Pomodoro, Integer> {
     List<Pomodoro> findByUserIdAndIsDeletedFalse(Integer userId);
 
     List<Pomodoro> findByTaskIdAndIsDeletedFalse(Integer taskId);
+
 }

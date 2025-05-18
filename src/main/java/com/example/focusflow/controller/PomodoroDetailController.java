@@ -17,7 +17,7 @@ import com.example.focusflow.service.PomodoroDetailService;
 import com.example.focusflow.entity.PomodoroDetail;
 
 @RestController
-@RequestMapping("/api/pomodroDetails")
+@RequestMapping("/api/pomodoroDetails")
 public class PomodoroDetailController {
     private final PomodoroDetailService pomodoroDetailService;
 

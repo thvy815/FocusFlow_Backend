@@ -1,6 +1,6 @@
 package com.example.focusflow.entity;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -25,15 +25,15 @@ public class Pomodoro {
     private Integer taskId;
 
     @Column(name = "start_at") // thoi gian bat dau lam pomodoro
-    private Timestamp startAt;
+    private Time startAt;
 
-    @Column(name = "end_at") // thoi gian ket thuc lam pomodoro
-    private Timestamp endAt;
+    @Column(name = "end_at", nullable = true) // thoi gian ket thuc lam pomodoro
+    private Time endAt;
 
     @Column(name = "due_date") // ngay chay pomodo_id nay
     private LocalDate dueDate;
 
-    @Column(name = "total_time") // tong thoi gian lam pomo
+    @Column(name = "total_time", nullable = true) // tong thoi gian lam pomo
     private long totalTime;
 
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
@@ -43,7 +43,7 @@ public class Pomodoro {
     public Pomodoro() {
     }
 
-    public Pomodoro(int id, int userId, int taskId, Timestamp startAt, Timestamp endAt, LocalDate dueDate,
+    public Pomodoro(int id, int userId, int taskId, Time startAt, Time endAt, LocalDate dueDate,
             long totalTime, Boolean isDeleted) {
         this.id = id;
         this.userId = userId;
@@ -55,8 +55,7 @@ public class Pomodoro {
         this.isDeleted = isDeleted;
     }
 
-    public Pomodoro(int id, int userId, int taskId, Timestamp startAt, LocalDate dueDate, Boolean isDeleted) {
-        this.id = id;
+    public Pomodoro(int id, int userId, int taskId, Time startAt, LocalDate dueDate, Boolean isDeleted) {
         this.userId = userId;
         this.taskId = taskId;
         this.startAt = startAt;
@@ -89,19 +88,19 @@ public class Pomodoro {
         return taskId;
     }
 
-    public void setStartAt(Timestamp startAt) {
+    public void setStartAt(Time startAt) {
         this.startAt = startAt;
     }
 
-    public Timestamp getStartAt() {
+    public Time getStartAt() {
         return startAt;
     }
 
-    public void setEndAt(Timestamp endAt) {
+    public void setEndAt(Time endAt) {
         this.endAt = endAt;
     }
 
-    public Timestamp getEndAt() {
+    public Time getEndAt() {
         return endAt;
     }
 

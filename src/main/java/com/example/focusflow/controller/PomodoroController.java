@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.focusflow.service.PomodoroService;
 
 import com.example.focusflow.entity.Pomodoro;
+import com.example.focusflow.entity.Task;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/pomodoro")
@@ -44,8 +47,15 @@ public class PomodoroController {
         return pomodoroService.createPomodoro(pomodoro);
     }
 
+    @PutMapping("/{id}")
+    public Pomodoro updatePomodoro(@PathVariable Integer id, @RequestBody Pomodoro pomodoro) {
+        pomodoro.setID(id);
+        return pomodoroService.updatePomodoro(pomodoro);
+    }
+
     @DeleteMapping("/{id}")
     public void deletePomodoro(@PathVariable Integer id) {
         pomodoroService.deletePomodoro(id);
     }
+
 }
