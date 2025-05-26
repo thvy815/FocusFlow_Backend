@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.repository.CtGroupUserRepository;
+import com.example.focusflow.repository.UserRepository;
 
 @Service
 public class CtGroupUserService {
@@ -14,7 +15,15 @@ public class CtGroupUserService {
     @Autowired
     private CtGroupUserRepository ctGroupUserRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public CtGroupUser addUserToGroup(CtGroupUser ctGroupUser) {
+        // Kiểm tra userId có tồn tại không
+        if (!userRepository.existsById(ctGroupUser.getUserId())) {
+            throw new IllegalArgumentException("User ID does not exist");
+        }
+
         return ctGroupUserRepository.save(ctGroupUser);
     }
 
