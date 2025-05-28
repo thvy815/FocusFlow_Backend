@@ -15,7 +15,7 @@ import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.service.CtGroupUserService;
 
 @RestController
-@RequestMapping("/api/group-users")
+@RequestMapping("/api/group-user")
 public class CtGroupUserController {
 
     @Autowired

@@ -15,7 +15,7 @@ import com.example.focusflow.entity.Group;
 import com.example.focusflow.service.GroupService;
 
 @RestController
-@RequestMapping("/api/groups")
+@RequestMapping("/api/group")
 public class GroupController {
     private final GroupService groupService;
 

@@ -13,8 +13,7 @@ public class CtGroupUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ct")
-    private int idCt;
+    private int id;
 
     @Column(name = "group_id", nullable = false)
     private int groupId;
@@ -31,12 +30,12 @@ public class CtGroupUser {
     }
 
     // Getters and Setters
-    public int getIdCt() {
-        return idCt;
+    public int getId() {
+        return id;
     }
 
-    public void setIdCt(int idCt) {
-        this.idCt = idCt;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getGroupId() {

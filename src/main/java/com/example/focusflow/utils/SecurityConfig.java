@@ -21,9 +21,7 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(authz -> authz
-                                                .requestMatchers("/auth/signin", "/api/user/create",
-                                                                "/api/pomodoro/**","/api/groups/**",
-                                                                "/api/group-users/**")
+                                                .requestMatchers("/auth/signin", "/api/user/create")
                                                 .permitAll() // Cho
                                                 // phép
                                                 // truy
