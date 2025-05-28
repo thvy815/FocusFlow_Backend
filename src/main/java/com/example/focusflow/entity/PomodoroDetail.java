@@ -1,7 +1,5 @@
 package com.example.focusflow.entity;
 
-import java.security.Timestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,22 +19,19 @@ public class PomodoroDetail {
     private Integer pomodoroId;
 
     @Column(name = "start_at") // thoi gian bat dau
-    private Timestamp startAt;
+    private String startAt;
 
     @Column(name = "end_at") // thoi gian ket thuc
-    private Timestamp endAt;
+    private String endAt;
 
     @Column(name = "total_time") // tong thoi gian lam detail
     private Integer totalTime;
-
-    @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
-    private Boolean isDeleted = false;
 
     // Constructorsgetters, setters
     public PomodoroDetail() {
     }
 
-    public PomodoroDetail(int id, int pomodoroId, Timestamp startAt, Timestamp endAt, int totalTime) {
+    public PomodoroDetail(int id, int pomodoroId, String startAt, String endAt, int totalTime) {
         this.id = id;
         this.pomodoroId = pomodoroId;
         this.startAt = startAt;
@@ -61,19 +56,19 @@ public class PomodoroDetail {
         return pomodoroId;
     }
 
-    public void setStartAt(Timestamp startAt) {
+    public void setStartAt(String startAt) {
         this.startAt = startAt;
     }
 
-    public Timestamp getStartAt() {
+    public String getStartAt() {
         return startAt;
     }
 
-    public void setEndAt(Timestamp endAt) {
+    public void setEndAt(String endAt) {
         this.endAt = endAt;
     }
 
-    public Timestamp getEndAt() {
+    public String getEndAt() {
         return endAt;
     }
 
@@ -84,13 +79,4 @@ public class PomodoroDetail {
     public int getTotalTime() {
         return totalTime;
     }
-
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public boolean getDeleted() {
-        return isDeleted;
-    }
-
 }

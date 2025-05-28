@@ -1,8 +1,5 @@
 package com.example.focusflow.entity;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,13 +22,13 @@ public class Pomodoro {
     private Integer taskId;
 
     @Column(name = "start_at") // thoi gian bat dau lam pomodoro
-    private Timestamp startAt;
+    private String startAt;
 
     @Column(name = "end_at") // thoi gian ket thuc lam pomodoro
-    private Timestamp endAt;
+    private String endAt;
 
     @Column(name = "due_date") // ngay chay pomodo_id nay
-    private LocalDate dueDate;
+    private String dueDate;
 
     @Column(name = "total_time") // tong thoi gian lam pomo
     private Integer totalTime;
@@ -43,8 +40,8 @@ public class Pomodoro {
     public Pomodoro() {
     }
 
-    public Pomodoro(int id, int userId, int taskId, Timestamp startAt, Timestamp endAt, LocalDate dueDate,
-            int totalTime, Boolean isDeleted) {
+    public Pomodoro(int id, int userId, int taskId, String startAt, String endAt, String dueDate,
+            int totalTime) {
         this.id = id;
         this.userId = userId;
         this.taskId = taskId;
@@ -52,7 +49,7 @@ public class Pomodoro {
         this.endAt = endAt;
         this.dueDate = dueDate;
         this.totalTime = totalTime;
-        this.isDeleted = isDeleted;
+        this.isDeleted = false;
     }
     // Getter, setter
 
@@ -80,27 +77,27 @@ public class Pomodoro {
         return taskId;
     }
 
-    public void setStartAt(Timestamp startAt) {
+    public void setStartAt(String startAt) {
         this.startAt = startAt;
     }
 
-    public Timestamp getStartAt() {
+    public String getStartAt() {
         return startAt;
     }
 
-    public void setEndAt(Timestamp endAt) {
+    public void setEndAt(String endAt) {
         this.endAt = endAt;
     }
 
-    public Timestamp getEndAt() {
+    public String getEndAt() {
         return endAt;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
-    public LocalDate getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
@@ -119,5 +116,4 @@ public class Pomodoro {
     public boolean getDeleted() {
         return isDeleted;
     }
-
 }

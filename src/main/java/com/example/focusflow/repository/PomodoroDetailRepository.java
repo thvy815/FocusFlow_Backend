@@ -9,5 +9,5 @@ import com.example.focusflow.entity.PomodoroDetail;
 
 @Repository
 public interface PomodoroDetailRepository extends JpaRepository<PomodoroDetail, Integer> {
-    List<PomodoroDetail> findByPomodoroIdAndIsDeletedFalse(Integer pomodoroId);
+    List<PomodoroDetail> findByPomodoroId(Integer pomodoroId);
 }

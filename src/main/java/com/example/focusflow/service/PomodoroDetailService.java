@@ -17,7 +17,7 @@ public class PomodoroDetailService {
     }
 
     public List<PomodoroDetail> getAllPomodoroByPomodoroId(Integer pomodoroId) {
-        return pomodoroDetailRepository.findByPomodoroIdAndIsDeletedFalse(pomodoroId);
+        return pomodoroDetailRepository.findByPomodoroId(pomodoroId);
     }
 
     public Optional<PomodoroDetail> getPomodoroDetailById(Integer id) {
