@@ -5,15 +5,18 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.focusflow.repository.TaskRepository;
 import com.example.focusflow.entity.Task;
+import com.example.focusflow.repository.CtGroupUserRepository;
+import com.example.focusflow.repository.TaskRepository;;;
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final CtGroupUserRepository ctGroupUserRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository,CtGroupUserRepository ctGroupUserRepository) {
         this.taskRepository = taskRepository;
+        this.ctGroupUserRepository = ctGroupUserRepository;
     }
 
     public List<Task> getAllTasksByUserId(Integer userId) {
@@ -22,6 +25,17 @@ public class TaskService {
 
     public Optional<Task> getTaskById(Integer id) {
         return taskRepository.findById(id);
+    }
+
+    // Tạo task theo ctId
+    public Task createTaskForCt(Integer ctGroupId, Task task) {
+        task.setCtGroupId(ctGroupId);
+        return taskRepository.save(task);
+    }
+    // Lấy task theo groupId (truy ngược qua ctId)
+    public List<Task> getTasksByGroupId(Integer groupId) {
+        List<Integer> ctGroupId = ctGroupUserRepository.findCtGroupIdByGroupId(groupId);
+        return taskRepository.findByCtGroupIdIn(ctGroupId);
     }
 
     public Task createTask(Task task) {

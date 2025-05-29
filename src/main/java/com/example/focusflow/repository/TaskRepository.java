@@ -10,4 +10,6 @@ import com.example.focusflow.entity.Task;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findByUserId(Integer userId);
+    List<Task> findByCtGroupIdIn(List<Integer> ctGroupId); 
+
 }

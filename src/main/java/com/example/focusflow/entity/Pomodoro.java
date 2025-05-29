@@ -18,7 +18,7 @@ public class Pomodoro {
     @Column(name = "user_id", nullable = false) // nguoi dung lam pomodoro
     private Integer userId;
 
-    @Column(name = "task_id", nullable = false) // task dung pomodoro
+    @Column(name = "task_id") // task dung pomodoro
     private Integer taskId;
 
     @Column(name = "start_at") // thoi gian bat dau lam pomodoro

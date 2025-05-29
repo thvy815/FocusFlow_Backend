@@ -25,10 +25,12 @@ public class GroupService {
     private CtGroupUserRepository ctGroupUserRepository;
 
     public Group createGroup(Group group) {
+        
         // Kiểm tra leaderId có tồn tại không
         if (!userRepository.existsById(group.getLeaderId())) {
             throw new IllegalArgumentException("Leader ID does not exist in User table");
         }
+        
 
         Group savedGroup = groupRepository.save(group);
 

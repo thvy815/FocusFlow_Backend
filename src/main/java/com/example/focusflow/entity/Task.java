@@ -83,6 +83,15 @@ public class Task {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    public Integer getCtGroupId() {
+        return ctGroupId;
+    }
+    
+    public void setCtGroupId(Integer ctGroupId) {
+        this.ctGroupId = ctGroupId;
+    }
+    
     
     public String getTitle() {
         return title;

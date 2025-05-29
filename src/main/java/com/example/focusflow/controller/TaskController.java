@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.focusflow.service.TaskService;
 import com.example.focusflow.entity.Task;
+import com.example.focusflow.service.TaskService;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -48,5 +48,10 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Integer id) {
         taskService.deleteTask(id);
+    }
+
+    @GetMapping("/group/{groupId}")
+    public List<Task> getTasksByGroup(@PathVariable Integer groupId) {
+        return taskService.getTasksByGroupId(groupId);
     }
 }

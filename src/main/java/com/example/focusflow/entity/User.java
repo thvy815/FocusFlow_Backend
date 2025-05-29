@@ -29,6 +29,9 @@ public class User {
 
     @Column(name = "fcm_token")
     private String fcmToken;
+
+    @Column(name = "score")
+    private Integer score = 0;
     
     // Constructors
     public User() {}
@@ -37,6 +40,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.score = 0;
     }
 
     // Getters, setters
@@ -86,5 +90,13 @@ public class User {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+    
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }
