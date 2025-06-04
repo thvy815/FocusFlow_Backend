@@ -30,9 +30,6 @@ public class PomodoroDetailService {
     }
 
     public void deletePomodoroDetail(Integer id) {
-        pomodoroDetailRepository.findById(id).ifPresent(pomodoroDetail -> {
-            pomodoroDetail.setDeleted(true);
-            pomodoroDetailRepository.save(pomodoroDetail);
-        });
+        pomodoroDetailRepository.deleteById(id);
     }
 }

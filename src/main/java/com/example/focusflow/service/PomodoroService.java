@@ -29,9 +29,6 @@ public class PomodoroService {
     }
 
     public void deletePomodoro(Integer id) {
-        pomodoroRepository.findById(id).ifPresent(pomodoro -> {
-            pomodoro.setDeleted(true);
-            pomodoroRepository.save(pomodoro);
-        });
+        pomodoroRepository.deleteById(id);
     }
 }
