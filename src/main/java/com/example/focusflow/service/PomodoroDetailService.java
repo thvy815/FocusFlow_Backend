@@ -6,19 +6,15 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.focusflow.repository.PomodoroDetailRepository;
-import com.example.focusflow.controller.PomodoroDetailController;
 import com.example.focusflow.entity.PomodoroDetail;
 
 @Service
 public class PomodoroDetailService {
 
-    private final PomodoroDetailController pomodoroDetailController;
     private final PomodoroDetailRepository pomodoroDetailRepository;
 
-    public PomodoroDetailService(PomodoroDetailRepository pomodoroDetailRepository,
-            PomodoroDetailController pomodoroDetailController) {
+    public PomodoroDetailService(PomodoroDetailRepository pomodoroDetailRepository) {
         this.pomodoroDetailRepository = pomodoroDetailRepository;
-        this.pomodoroDetailController = pomodoroDetailController;
     }
 
     public List<PomodoroDetail> getAllPomodoroByPomodoroId(Integer pomodoroId) {
