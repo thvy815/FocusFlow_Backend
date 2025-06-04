@@ -3,6 +3,7 @@ package com.example.focusflow.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +37,10 @@ public class PomodoroDetailController {
     @PostMapping
     public PomodoroDetail createPomodoroDetail(@RequestBody PomodoroDetail pomodoroDetail) {
         return pomodoroDetailService.createPomodoroDetail(pomodoroDetail);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePomodoro(@PathVariable Integer id) {
+        pomodoroDetailService.deletePomodoroDetail(id);
     }
 }
