@@ -30,6 +30,6 @@ public class PomodoroDetailService {
     }
 
     public void deletePomodoroDetail(Integer id) {
-        pomodoroDetailRepository.deleteById(id);
+        pomodoroDetailRepository.deleteByPomodoroId(id);
     }
 }

@@ -3,6 +3,7 @@ package com.example.focusflow.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +40,9 @@ public class PomodoroDetailController {
         return pomodoroDetailService.createPomodoroDetail(pomodoroDetail);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePomodoro(@PathVariable Integer id) {
-        pomodoroDetailService.deletePomodoroDetail(id);
+    @DeleteMapping("/api/pomodoroDetails/pomodoro/{pomodoroId}")
+    public ResponseEntity<Void> deleteByPomodoroId(@PathVariable Integer pomodoroId) {
+        pomodoroDetailService.deletePomodoroDetail(pomodoroId);
+        return ResponseEntity.noContent().build();
     }
 }
