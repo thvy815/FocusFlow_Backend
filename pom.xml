@@ -56,13 +56,13 @@
 		<dependency>
         	<groupId>com.mysql</groupId>
         	<artifactId>mysql-connector-j</artifactId>
-        	<version>8.4.0</version> 
+        	<!--<version>8.4.0</version>--> 
     	</dependency>
 		 <!-- Jakarta Persistence -->
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.1.0</version>
+			<!--<version>3.1.0</version>-->
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -99,6 +99,20 @@
 			<version>0.11.5</version>
 		</dependency>
 
+	
+		<!-- Firebase Admin SDK -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.2.0</version>
+		</dependency>
+
+		<!-- Guava (required by Firebase) -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.1-jre</version>
+		</dependency>
 	</dependencies>
 
 	<build>
