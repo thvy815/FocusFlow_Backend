@@ -12,9 +12,18 @@ import com.example.focusflow.entity.CtGroupUser;
 @Repository
 public interface CtGroupUserRepository extends JpaRepository<CtGroupUser, Integer> {
     List<CtGroupUser> findByGroupId(Integer groupId);
+
     List<CtGroupUser> findByUserId(Integer userId);
+
     @Query("SELECT c.id FROM CtGroupUser c WHERE c.groupId = :groupId")
     List<Integer> findCtGroupIdByGroupId(@Param("groupId") Integer groupId);
+
     boolean existsByGroupIdAndUserId(Integer groupId, Integer userId);
 
+    @Query("SELECT c.id FROM CtGroupUser c WHERE c.userId = :userId AND c.groupId = :groupId")
+    Integer findCtIdByUserIdAndGroupId(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
+
+    void deleteByGroupIdAndUserId(Integer groupId, Integer userId);
+    
+    void deleteByGroupId(Integer groupId);
 }

@@ -1,5 +1,6 @@
 package com.example.focusflow.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
+    // API để lấy user theo id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         Optional<User> user = userService.getUserById(id);
@@ -52,6 +54,13 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // API để lấy tất cả người dùng
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     // API để xóa người dùng (email tự lấy từ JWT)
