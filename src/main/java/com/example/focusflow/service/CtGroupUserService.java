@@ -1,11 +1,14 @@
 package com.example.focusflow.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.focusflow.entity.CtGroupUser;
+import com.example.focusflow.entity.User;
 import com.example.focusflow.repository.CtGroupUserRepository;
 import com.example.focusflow.repository.GroupRepository;
 import com.example.focusflow.repository.UserRepository;
@@ -15,7 +18,6 @@ public class CtGroupUserService {
 
     @Autowired
     private CtGroupUserRepository ctGroupUserRepository;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -39,6 +41,23 @@ public class CtGroupUserService {
         return ctGroupUserRepository.save(ctGroupUser);
     }
 
+    public CtGroupUser getCtGroupUserById(Integer id) {
+        return ctGroupUserRepository.findById(id).orElse(null);
+    }
+
+    public List<User> getUsersByGroupId(Integer groupId) {
+        List<CtGroupUser> ctList = ctGroupUserRepository.findByGroupId(groupId);
+        List<User> users = new ArrayList<>();
+        for (CtGroupUser ct : ctList) {
+            userRepository.findById(ct.getUserId()).ifPresent(users::add);
+        }
+        return users;
+    }
+
+    public Integer getCtIdByUserIdAndGroupId(Integer userId, Integer groupId) {
+        return ctGroupUserRepository.findCtIdByUserIdAndGroupId(userId, groupId);
+    }
+
     public List<CtGroupUser> getUsersInGroup(Integer groupId) {
         return ctGroupUserRepository.findByGroupId(groupId);
     }
@@ -49,5 +68,15 @@ public class CtGroupUserService {
 
     public void removeCtGroupUser(Integer idCt) {
         ctGroupUserRepository.deleteById(idCt);
+    }
+
+    @Transactional
+    public void removeByGroupIdAndUserId(Integer groupId, Integer userId) {
+        ctGroupUserRepository.deleteByGroupIdAndUserId(groupId, userId);
+    }
+
+    @Transactional
+    public void removeAllUsersFromGroup(Integer groupId) {
+        ctGroupUserRepository.deleteByGroupId(groupId);
     }
 }

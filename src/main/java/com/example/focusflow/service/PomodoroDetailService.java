@@ -10,6 +10,7 @@ import com.example.focusflow.entity.PomodoroDetail;
 
 @Service
 public class PomodoroDetailService {
+
     private final PomodoroDetailRepository pomodoroDetailRepository;
 
     public PomodoroDetailService(PomodoroDetailRepository pomodoroDetailRepository) {
@@ -26,5 +27,9 @@ public class PomodoroDetailService {
 
     public PomodoroDetail createPomodoroDetail(PomodoroDetail pomodoroDetail) {
         return pomodoroDetailRepository.save(pomodoroDetail);
+    }
+
+    public void deletePomodoroDetail(Integer id) {
+        pomodoroDetailRepository.deleteByPomodoroId(id);
     }
 }

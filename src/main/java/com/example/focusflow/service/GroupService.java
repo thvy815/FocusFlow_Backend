@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.entity.Group;
@@ -31,7 +32,6 @@ public class GroupService {
             throw new IllegalArgumentException("Leader ID does not exist in User table");
         }
         
-
         Group savedGroup = groupRepository.save(group);
 
         // Sau khi tạo nhóm, thêm leaderId vào bảng ct_group_user
@@ -43,14 +43,15 @@ public class GroupService {
         return savedGroup;
     }
 
-    public List<Group> getAllGroups() {
-        return groupRepository.findAll();
+    public List<Group> getAllGroupsByUser(Integer userId) {
+        return groupRepository.findAllGroupsByUserId(userId);
     }
 
     public Optional<Group> getGroupById(Integer id) {
         return groupRepository.findById(id);
     }
 
+    @Transactional
     public void deleteGroup(Integer id) {
         groupRepository.deleteById(id);
     }

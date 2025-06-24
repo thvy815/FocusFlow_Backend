@@ -23,6 +23,15 @@ public class TaskService {
         return taskRepository.findByUserId(userId);
     }
 
+    public List<Task> getAllTasksRelatedToUser(Integer userId) {
+        List<Task> personalTasks = taskRepository.findByUserId(userId);
+        List<Task> groupTasks = taskRepository.findGroupTasksByUserId(userId);
+
+        personalTasks.addAll(groupTasks);
+        return personalTasks;
+    }
+
+
     public Optional<Task> getTaskById(Integer id) {
         return taskRepository.findById(id);
     }

@@ -5,6 +5,7 @@ import com.example.focusflow.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class UserService {
     // Phương thức trả về người dùng theo id
     public Optional<User> getUserById(Integer id) {
         return userRepository.findById(id);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     // Phương thức kiểm tra mật khẩu người dùng
