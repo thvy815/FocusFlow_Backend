@@ -71,8 +71,8 @@ public class TaskNotificationScheduler {
     }
 
     private void sendPushNotification(Task task, String messageBody) {
-        // Ở đây bạn cần lấy token của user qua userId
-        String deviceToken = getTokenFromUserId(task.getUserId()); // TODO: cập nhật theo ứng dụng của bạn
+        // lấy token của user qua userId
+        String deviceToken = getTokenFromUserId(task.getUserId()); 
 
         if (deviceToken == null) return;
 

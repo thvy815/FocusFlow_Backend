@@ -21,7 +21,8 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(authz -> authz
-                                                .requestMatchers("/auth/signin", "/api/user/create")
+                                                .requestMatchers("/auth/signin", "/api/user/create","/api/group/**",
+                                                                "/api/group-user/**","/api/tasks/**","/api/ai/**")
                                                 .permitAll() // Cho
                                                 // phép
                                                 // truy
@@ -31,7 +32,7 @@ public class SecurityConfig {
                                                 // thựcthực
                                                 .anyRequest().authenticated())
                                 .httpBasic(basic -> basic.disable()) // Tắt xác thực cơ bản (basic auth) vì bạn đang
-                                                                     // dùng JWT
+                                                                          // dùng JWT
                                 .formLogin(login -> login.disable()); // Không cần form login cho API
 
                 // Thêm JwtAuthenticationFilter trước khi kiểm tra
