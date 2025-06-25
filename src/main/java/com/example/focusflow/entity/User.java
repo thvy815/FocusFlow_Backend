@@ -12,9 +12,10 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Tự động sinh giá trị 'id' khi một đối tượng mới được lưu vào cơ sở dữ liệu.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Tự động sinh giá trị 'id' khi một đối tượng mới được lưu vào
+                                                        // cơ sở dữ liệu.
     private Integer id;
-    
+
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -32,9 +33,44 @@ public class User {
 
     @Column(name = "score")
     private Integer score = 0;
-    
+
+    // lien ket ngan hang
+    @Column(name = "is_pro")
+    private Boolean isPro = false;
+
+    @Column(name = "plan_name")
+    private String planName;
+
+    @Column(name = "expire_time")
+    private Long expireTime;
+
+    public Boolean getIsPro() {
+        return isPro;
+    }
+
+    public void setIsPro(Boolean isPro) {
+        this.isPro = isPro;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public Long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
+    }
+
     // Constructors
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String password, String email) {
         this.username = username;
@@ -95,7 +131,7 @@ public class User {
     public Integer getScore() {
         return score;
     }
-    
+
     public void setScore(Integer score) {
         this.score = score;
     }
