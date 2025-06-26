@@ -13,7 +13,7 @@ public class ProService {
     private UserRepository userRepository;
 
     // ⚠️ Không lấy email từ request nữa, mà từ controller truyền vào
-    public void upgradeUserPro(String email, ProUpgradeRequest request) {
+    public boolean upgradeUserPro(String email, ProUpgradeRequest request) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new IllegalArgumentException("User không tồn tại");
@@ -24,8 +24,10 @@ public class ProService {
         user.setExpireTime(request.getExpireTime());
 
         userRepository.save(user);
+        return true;
     }
 
+    // ⚙️ Lấy trạng thái Pro theo email
     public User getProStatus(String email) {
         return userRepository.findByEmail(email);
     }

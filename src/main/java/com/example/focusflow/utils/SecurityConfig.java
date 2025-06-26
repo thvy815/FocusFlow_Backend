@@ -29,6 +29,7 @@ public class SecurityConfig {
                                                 // không
                                                 // cần xác
                                                 // thựcthực
+                                                .requestMatchers("/api/pro/**").authenticated()
                                                 .anyRequest().authenticated())
                                 .httpBasic(basic -> basic.disable()) // Tắt xác thực cơ bản (basic auth) vì bạn đang
                                                                      // dùng JWT
