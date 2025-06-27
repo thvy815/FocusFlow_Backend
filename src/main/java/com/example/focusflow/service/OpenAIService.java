@@ -37,7 +37,7 @@ public class OpenAIService {
 
         // 2. Request body
         Map<String, Object> body = new HashMap<>();
-        body.put("model", "deepseek/deepseek-r1-0528:free"); // updated model
+        body.put("model", "google/gemma-3-12b-it:free"); // updated model
         body.put("messages", List.of(
             Map.of("role", "user", "content", message)
         ));
