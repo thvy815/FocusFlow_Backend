@@ -28,6 +28,6 @@ public class AIController {
     @GetMapping("/chat")
     public ResponseEntity<String> chatWithAIGet(@RequestParam(defaultValue = "Xin chào") String message) {
         String aiReply = openAIService.sendMessage(message);
-        return ResponseEntity.ok(aiReply);
+        return ResponseEntity.ok().body(aiReply);
     }
 }
