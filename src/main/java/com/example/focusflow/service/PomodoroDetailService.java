@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.focusflow.repository.PomodoroDetailRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.focusflow.entity.PomodoroDetail;
 
 @Service
@@ -29,6 +32,7 @@ public class PomodoroDetailService {
         return pomodoroDetailRepository.save(pomodoroDetail);
     }
 
+    @Transactional
     public void deletePomodoroDetail(Integer id) {
         pomodoroDetailRepository.deleteByPomodoroId(id);
     }

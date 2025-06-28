@@ -1,5 +1,7 @@
 package com.example.focusflow.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,11 +55,11 @@ public class Pomodoro {
     }
     // Getter, setter
 
-    public void setID(int id) {
+    public void setID(Integer id) {
         this.id = id;
     }
 
-    public int getID() {
+    public Integer getID() {
         return id;
     }
 
@@ -69,11 +71,11 @@ public class Pomodoro {
         return userId;
     }
 
-    public void setTaskId(int taskId) {
+    public void setTaskId(Integer taskId) {
         this.taskId = taskId;
     }
 
-    public int getTaskId() {
+    public Integer getTaskId() {
         return taskId;
     }
 
@@ -101,11 +103,11 @@ public class Pomodoro {
         return dueDate;
     }
 
-    public void setTotalTime(int totalTime) {
+    public void setTotalTime(Integer totalTime) {
         this.totalTime = totalTime;
     }
 
-    public int getTotalTime() {
+    public Integer getTotalTime() {
         return totalTime;
     }
 

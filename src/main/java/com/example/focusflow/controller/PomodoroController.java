@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class PomodoroController {
         return pomodoroService.getAllPomodoroByUserId(userId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Pomodoro> getTaskById(@PathVariable Integer id) {
         return pomodoroService.getPomodoroById(id);
     }
@@ -42,5 +43,11 @@ public class PomodoroController {
     @DeleteMapping("/{id}")
     public void deletePomodoro(@PathVariable Integer id) {
         pomodoroService.deletePomodoro(id);
+    }
+
+    @PutMapping("/{id}")
+    public Pomodoro updatePomodoro(@PathVariable Integer id, @RequestBody Pomodoro pomodoro) {
+        pomodoro.setID(id); // đảm bảo đúng ID khi cập nhật
+        return pomodoroService.updatePomodoro(pomodoro);
     }
 }

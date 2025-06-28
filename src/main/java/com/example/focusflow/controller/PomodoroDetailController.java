@@ -31,7 +31,7 @@ public class PomodoroDetailController {
     }
 
     @GetMapping("/{id}")
-    public Optional<PomodoroDetail> getTaskById(@PathVariable Integer id) {
+    public Optional<PomodoroDetail> getPomodoroDetailById(@PathVariable Integer id) {
         return pomodoroDetailService.getPomodoroDetailById(id);
     }
 
@@ -40,7 +40,7 @@ public class PomodoroDetailController {
         return pomodoroDetailService.createPomodoroDetail(pomodoroDetail);
     }
 
-    @DeleteMapping("/api/pomodoroDetails/pomodoro/{pomodoroId}")
+    @DeleteMapping("/pomodoro/{pomodoroId}")
     public ResponseEntity<Void> deleteByPomodoroId(@PathVariable Integer pomodoroId) {
         pomodoroDetailService.deletePomodoroDetail(pomodoroId);
         return ResponseEntity.noContent().build();

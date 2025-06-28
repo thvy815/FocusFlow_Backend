@@ -31,4 +31,13 @@ public class PomodoroService {
     public void deletePomodoro(Integer id) {
         pomodoroRepository.deleteById(id);
     }
+
+    public Pomodoro updatePomodoro(Pomodoro pomodoro) {
+        Optional<Pomodoro> existing = pomodoroRepository.findById(pomodoro.getID());
+        if (existing.isPresent()) {
+            return pomodoroRepository.save(pomodoro);
+        } else {
+            throw new RuntimeException("Pomodoro not found with ID: " + pomodoro.getID());
+        }
+    }
 }
