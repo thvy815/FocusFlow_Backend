@@ -31,6 +31,14 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User getUserByUsernameOrEmail(String input) {
+        User user = userRepository.findByUsername(input);
+        if (user == null) {
+            user = userRepository.findByEmail(input);
+        }
+        return user;
+    }
+
     // Phương thức trả về người dùng theo id
     public Optional<User> getUserById(Integer id) {
         return userRepository.findById(id);

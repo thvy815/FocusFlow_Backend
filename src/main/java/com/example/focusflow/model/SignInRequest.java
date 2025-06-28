@@ -2,25 +2,25 @@ package com.example.focusflow.model;
 
 public class SignInRequest {
 
-    private String email;
+    private String emailOrUsername;
     private String password;
     private boolean rememberMe;
 
     // Constructors, getters, setters
     public SignInRequest() {}
 
-    public SignInRequest(String email, String password, boolean rememberMe) {
-        this.email = email;
+    public SignInRequest(String emailorUsername, String password, boolean rememberMe) {
+        this.emailOrUsername = emailorUsername;
         this.password = password;
         this.rememberMe = rememberMe;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailOrUsername() {
+        return emailOrUsername;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailOrUsername(String emailOrUsername) {
+        this.emailOrUsername = emailOrUsername;
     }
 
     public String getPassword() {

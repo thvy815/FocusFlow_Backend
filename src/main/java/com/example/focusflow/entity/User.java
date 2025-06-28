@@ -16,8 +16,11 @@ public class User {
                                                         // cơ sở dữ liệu.
     private Integer id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -25,11 +28,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "provider")
+    private String provider = "local"; // "local" hoặc "google"
+
     @Column(name = "avatar_url")
     private String avatarUrl;
-
-    @Column(name = "fcm_token")
-    private String fcmToken;
 
     @Column(name = "score")
     private Integer score = 0;
@@ -44,6 +47,18 @@ public class User {
     @Column(name = "expire_time")
     private Long expireTime;
 
+    // Constructors
+    public User() {
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.score = 0;
+    }
+
+    // Getters, setters
     public Boolean getIsPro() {
         return isPro;
     }
@@ -68,18 +83,14 @@ public class User {
         this.expireTime = expireTime;
     }
 
-    // Constructors
-    public User() {
+    public String getFullName() {
+        return fullName;
     }
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.score = 0;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    // Getters, setters
     public Integer getId() {
         return id;
     }
@@ -120,19 +131,19 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
-
     public Integer getScore() {
         return score;
     }
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

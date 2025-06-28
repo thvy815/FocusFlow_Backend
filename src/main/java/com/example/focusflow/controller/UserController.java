@@ -1,11 +1,9 @@
 package com.example.focusflow.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,22 +66,5 @@ public class UserController {
     public void deleteCurrentUser() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.deleteUserByEmail(email);
-    }
-
-    // API lưu token vào backend
-    @PostMapping("/update-fcm-token")
-    public ResponseEntity<String> updateFcmToken(@RequestBody Map<String, String> request) {
-        Integer userId = Integer.parseInt(request.get("userId"));
-        String fcmToken = request.get("fcmToken");
-
-        Optional<User> optionalUser = userService.getUserById(userId);
-        if (!optionalUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-        User user = optionalUser.get();
-        user.setFcmToken(fcmToken);
-        userService.saveUser(user);
-        return ResponseEntity.ok("FCM token updated");
     }
 }
