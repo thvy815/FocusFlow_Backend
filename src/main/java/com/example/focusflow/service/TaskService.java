@@ -13,7 +13,9 @@ import com.example.focusflow.entity.User;
 import com.example.focusflow.repository.CtGroupUserRepository;
 import com.example.focusflow.repository.TaskAssignmentRepository;
 import com.example.focusflow.repository.TaskRepository;
-import com.example.focusflow.repository.UserRepository;;;
+import com.example.focusflow.repository.UserRepository;
+
+import jakarta.transaction.Transactional;;;
 
 @Service
 public class TaskService {
@@ -88,11 +90,35 @@ public class TaskService {
         return userRepository.findAllById(userIds);
     }
 
+    // Cập nhật task cá nhân (không có ctGroupIds)
     public Task updateTask(Task task) {
         return taskRepository.save(task);
     }
 
+    @Transactional
+    // Cập nhật task + gán danh sách ctGroupId (phân công nhiều người)
+    public Task updateTask(Task task, List<Integer> ctGroupIds) {
+        // Cập nhật thông tin task cơ bản
+        Task updatedTask = taskRepository.save(task);
+
+        if (ctGroupIds != null && !ctGroupIds.isEmpty()) {
+            // Xóa tất cả phân công cũ của task này
+            taskAssignmentRepository.deleteByTaskId(task.getId());
+            
+            // Thêm lại phân công mới
+            for (Integer ctGroupId : ctGroupIds) {
+                TaskAssignment assignment = new TaskAssignment(task.getId(), ctGroupId);
+                taskAssignmentRepository.save(assignment);
+            }
+        }  
+        return updatedTask;
+    }
+
     public void deleteTask(Integer id) {
+        // Xóa tất cả các assignment liên quan trước
+        taskAssignmentRepository.deleteByTaskId(id);
+        
+        // Xóa task
         taskRepository.deleteById(id);
     }
 }

@@ -3,6 +3,7 @@ package com.example.focusflow.model;
 import java.util.List;
 
 public class TaskGroupRequest {
+    public Integer taskId; 
     public Integer userId;
     public String title;
     public String description;
