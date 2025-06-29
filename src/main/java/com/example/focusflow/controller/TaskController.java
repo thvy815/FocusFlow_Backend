@@ -3,6 +3,7 @@ package com.example.focusflow.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.focusflow.entity.Task;
+import com.example.focusflow.entity.User;
 import com.example.focusflow.model.TaskGroupRequest;
 import com.example.focusflow.service.TaskService;
 
@@ -59,6 +61,12 @@ public class TaskController {
         } else {
             return taskService.createTask(task, dto.ctGroupIds); // tạo task nhóm + gán assignment
         }
+    }
+
+    @GetMapping("/{taskId}/assignees")
+    public ResponseEntity<List<User>> getAssignees(@PathVariable int taskId) {
+        List<User> users = taskService.getAssigneesOfTask(taskId);
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")

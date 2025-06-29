@@ -70,6 +70,10 @@ public class CtGroupUserService {
         ctGroupUserRepository.deleteById(idCt);
     }
 
+    public List<Integer> getCtIdsForUsersInGroup(List<Integer> userIds, Integer groupId) {
+        return ctGroupUserRepository.findCtIdsByUserIdsAndGroupId(userIds, groupId);
+    }
+
     @Transactional
     public void removeByGroupIdAndUserId(Integer groupId, Integer userId) {
         ctGroupUserRepository.deleteByGroupIdAndUserId(groupId, userId);

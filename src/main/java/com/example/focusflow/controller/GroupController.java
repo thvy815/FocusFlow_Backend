@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.entity.Group;
+import com.example.focusflow.model.CtIdRequest;
 import com.example.focusflow.model.GroupWithUsersRequest;
 import com.example.focusflow.service.CtGroupUserService;
 import com.example.focusflow.service.GroupService;
@@ -65,6 +66,12 @@ public class GroupController {
         }
 
         return ResponseEntity.ok("Members added successfully");
+    }
+
+    @PostMapping("/ct-ids")
+    public ResponseEntity<List<Integer>> getCtIdsForUsersInGroup(@RequestBody CtIdRequest request) {
+        List<Integer> ctIds = ctGroupUserService.getCtIdsForUsersInGroup(request.getUserIds(), request.getGroupId());
+        return ResponseEntity.ok(ctIds);
     }
 
     @GetMapping("/user/{userId}")

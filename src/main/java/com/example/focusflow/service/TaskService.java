@@ -1,15 +1,19 @@
 package com.example.focusflow.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.entity.Task;
 import com.example.focusflow.entity.TaskAssignment;
+import com.example.focusflow.entity.User;
 import com.example.focusflow.repository.CtGroupUserRepository;
 import com.example.focusflow.repository.TaskAssignmentRepository;
-import com.example.focusflow.repository.TaskRepository;;;
+import com.example.focusflow.repository.TaskRepository;
+import com.example.focusflow.repository.UserRepository;;;
 
 @Service
 public class TaskService {
@@ -20,10 +24,16 @@ public class TaskService {
 
     private final CtGroupUserRepository ctGroupUserRepository;
 
-    public TaskService(TaskRepository taskRepository, CtGroupUserRepository ctGroupUserRepository,  TaskAssignmentRepository taskAssignmentRepository) {
+    private final UserRepository userRepository;
+
+    public TaskService(TaskRepository taskRepository, 
+                       CtGroupUserRepository ctGroupUserRepository,  
+                       TaskAssignmentRepository taskAssignmentRepository,
+                       UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.taskAssignmentRepository = taskAssignmentRepository;
         this.ctGroupUserRepository = ctGroupUserRepository;
+        this.userRepository = userRepository;
     }
     
     // Lấy task cá nhân (userId tạo) + task nhóm được phân công
@@ -62,6 +72,20 @@ public class TaskService {
         }
 
         return savedTask;
+    }
+
+    public List<User> getAssigneesOfTask(int taskId) {
+        List<TaskAssignment> assignments = taskAssignmentRepository.findByTaskId(taskId);
+        List<Integer> userIds = new ArrayList<>();
+
+        for (TaskAssignment assignment : assignments) {
+            CtGroupUser ct = ctGroupUserRepository.findById(assignment.getCtGroupId()).orElse(null);
+            if (ct != null) {
+                userIds.add(ct.getUserId());
+            }
+        }
+
+        return userRepository.findAllById(userIds);
     }
 
     public Task updateTask(Task task) {
