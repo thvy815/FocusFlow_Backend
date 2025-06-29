@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.focusflow.entity.Task;
+import com.example.focusflow.model.TaskGroupRequest;
 import com.example.focusflow.service.TaskService;
 
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
+
     private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 
+    // GET task cá nhân + nhóm liên quan
     @GetMapping("/user/{userId}")
     public List<Task> getTasksByUser(@PathVariable Integer userId) {
         return taskService.getAllTasksRelatedToUser(userId);
@@ -34,9 +37,28 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
+    // Tạo task cá nhân hoặc nhóm tùy theo có ctGroupIds hay không
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    public Task createTask(@RequestBody TaskGroupRequest dto) {
+        Task task = new Task(
+                null,
+                dto.userId,
+                dto.title,
+                dto.description,
+                dto.dueDate,
+                dto.time,
+                dto.tag,
+                dto.priority,
+                dto.repeatStyle,
+                dto.reminderStyle
+        );
+
+        // nếu không có danh sách ctGroupIds → tạo task cá nhân
+        if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
+            return taskService.createTask(task);
+        } else {
+            return taskService.createTask(task, dto.ctGroupIds); // tạo task nhóm + gán assignment
+        }
     }
 
     @PutMapping("/{id}")

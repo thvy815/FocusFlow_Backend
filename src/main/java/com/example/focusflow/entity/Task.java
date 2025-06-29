@@ -18,9 +18,6 @@ public class Task {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "ctgroup_id")
-    private Integer ctGroupId;
-
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -51,11 +48,10 @@ public class Task {
     // Constructorsgetters, setters
     public Task() {}
 
-    public Task(Integer id, Integer userId, Integer ctGroupId,  String title, String description,
+    public Task(Integer id, Integer userId,  String title, String description,
                 String dueDate, String time, String tag, Integer priority, String repeatStyle, String reminderStyle) {
         this.id = id;
         this.userId = userId;
-        this.ctGroupId = ctGroupId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -82,16 +78,7 @@ public class Task {
     
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getCtGroupId() {
-        return ctGroupId;
-    }
-    
-    public void setCtGroupId(Integer ctGroupId) {
-        this.ctGroupId = ctGroupId;
-    }
-    
+    }    
     
     public String getTitle() {
         return title;
