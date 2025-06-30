@@ -54,6 +54,7 @@ public class TaskController {
                 dto.repeatStyle,
                 dto.reminderStyle
         );
+        task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
 
         // nếu không có danh sách ctGroupIds → tạo task cá nhân
         if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
@@ -83,6 +84,7 @@ public class TaskController {
             dto.repeatStyle,
             dto.reminderStyle
         );
+        task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
 
         if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
             return taskService.updateTask(task); // chỉ update task

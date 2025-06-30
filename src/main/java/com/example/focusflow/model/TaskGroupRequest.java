@@ -13,6 +13,7 @@ public class TaskGroupRequest {
     public Integer priority;
     public String repeatStyle;
     public String reminderStyle;
+    public Boolean isCompleted;
     
     // Optional: có thì là nhóm, không có thì là cá nhân
     public List<Integer> ctGroupIds;
