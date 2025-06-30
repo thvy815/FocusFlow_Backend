@@ -54,6 +54,7 @@ public class TaskController {
                 dto.repeatStyle,
                 dto.reminderStyle
         );
+        task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
 
         // nếu không có danh sách ctGroupIds → tạo task cá nhân
         if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
@@ -69,10 +70,27 @@ public class TaskController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Integer id, @RequestBody Task task) {
-        task.setId(id);
-        return taskService.updateTask(task);
+    @PutMapping
+    public Task updateTask(@RequestBody TaskGroupRequest dto) {
+        Task task = new Task(
+            dto.taskId,
+            dto.userId,
+            dto.title,
+            dto.description,
+            dto.dueDate,
+            dto.time,
+            dto.tag,
+            dto.priority,
+            dto.repeatStyle,
+            dto.reminderStyle
+        );
+        task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
+
+        if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
+            return taskService.updateTask(task); // chỉ update task
+        } else {
+            return taskService.updateTask(task, dto.ctGroupIds); // update task + phân công
+        }
     }
 
     @DeleteMapping("/{id}")
