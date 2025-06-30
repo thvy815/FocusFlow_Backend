@@ -38,4 +38,30 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
         WHERE ta.ctGroupId IN :ctGroupIds
     """)
     List<Task> findByCtGroupIdIn(@Param("ctGroupIds") List<Integer> ctGroupIds);
+
+    //check Streak
+    @Query("""
+        SELECT COUNT(t) FROM Task t
+        WHERE t.userId = :userId
+        AND t.isCompleted = true
+        AND t.dueDate = :today
+    """)
+    long countCompletedTodayTasksByUserId(@Param("userId") Integer userId, @Param("today") String today);
+
+    //check mission 3 task
+    @Query("""
+        SELECT t FROM Task t
+        WHERE t.userId = :userId
+        AND t.isCompleted = true
+    """)
+    List<Task> findByUserIdAndIsCompletedTrue(@Param("userId") Integer userId);
+
+    //check mission full task
+    @Query("""
+        SELECT t FROM Task t
+        WHERE t.userId = :userId
+        AND t.dueDate = :dueDate
+    """)
+    List<Task> findByUserIdAndDueDate(@Param("userId") Integer userId, @Param("dueDate") String dueDate);
+
 }

@@ -1,5 +1,7 @@
 package com.example.focusflow.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +89,19 @@ public class TaskService {
 
         return userRepository.findAllById(userIds);
     }
+
+    //Hàm kiểm tra cho Streak
+    public boolean hasCompletedAnyTaskToday(Integer userId) {
+    List<Task> allTasks = getAllTasksRelatedToUser(userId);
+    String todayStr = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+    return allTasks.stream()
+        .anyMatch(task ->
+            Boolean.TRUE.equals(task.getIsCompleted()) &&
+            todayStr.equals(task.getDueDate())
+        );
+}
+
 
     public Task updateTask(Task task) {
         return taskRepository.save(task);
