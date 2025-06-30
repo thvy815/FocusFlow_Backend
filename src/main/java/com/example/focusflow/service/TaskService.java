@@ -12,32 +12,34 @@ import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.entity.Task;
 import com.example.focusflow.entity.TaskAssignment;
 import com.example.focusflow.entity.User;
+import com.example.focusflow.model.TaskGroupMessage;
 import com.example.focusflow.repository.CtGroupUserRepository;
 import com.example.focusflow.repository.TaskAssignmentRepository;
 import com.example.focusflow.repository.TaskRepository;
 import com.example.focusflow.repository.UserRepository;
 
-import jakarta.transaction.Transactional;;;
+import jakarta.transaction.Transactional;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @Service
 public class TaskService {
     
     private final TaskRepository taskRepository;
-
     private TaskAssignmentRepository taskAssignmentRepository;
-
     private final CtGroupUserRepository ctGroupUserRepository;
-
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public TaskService(TaskRepository taskRepository, 
                        CtGroupUserRepository ctGroupUserRepository,  
                        TaskAssignmentRepository taskAssignmentRepository,
-                       UserRepository userRepository) {
+                       UserRepository userRepository,
+                       SimpMessagingTemplate messagingTemplate) {
         this.taskRepository = taskRepository;
         this.taskAssignmentRepository = taskAssignmentRepository;
         this.ctGroupUserRepository = ctGroupUserRepository;
         this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
     }
     
     // Lấy task cá nhân (userId tạo) + task nhóm được phân công
@@ -64,14 +66,23 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    // Tạo task + gán danh sách ctGroupId (phân công nhiều người)
+    // Tạo task nhóm + gán danh sách ctGroupId (phân công nhiều người)
     public Task createTask(Task task, List<Integer> ctGroupIds) {
         Task savedTask = taskRepository.save(task);
 
         if (ctGroupIds != null && !ctGroupIds.isEmpty()) {
             for (Integer ctGroupId : ctGroupIds) {
-                TaskAssignment assignment = new TaskAssignment(savedTask.getId(), ctGroupId);
-                taskAssignmentRepository.save(assignment);
+                taskAssignmentRepository.save(new TaskAssignment(savedTask.getId(), ctGroupId));
+
+                // 🔔 Gửi notify tới group
+                Optional<CtGroupUser> ct = ctGroupUserRepository.findById(ctGroupId);
+                ct.ifPresent(ctGroupUser -> {
+                    Integer groupId = ctGroupUser.getGroupId();
+                    
+                    // 🔔 Gửi TaskMessage dạng "created"
+                    TaskGroupMessage message = new TaskGroupMessage("created", savedTask);
+                    messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
+                });
             }
         }
 
@@ -102,7 +113,7 @@ public class TaskService {
             Boolean.TRUE.equals(task.getIsCompleted()) &&
             todayStr.equals(task.getDueDate())
         );
-}
+    }
 
 
     // Cập nhật task cá nhân (không có ctGroupIds)
@@ -111,7 +122,7 @@ public class TaskService {
     }
 
     @Transactional
-    // Cập nhật task + gán danh sách ctGroupId (phân công nhiều người)
+    // Cập nhật task nhóm + gán danh sách ctGroupId (phân công nhiều người)
     public Task updateTask(Task task, List<Integer> ctGroupIds) {
         // Cập nhật thông tin task cơ bản
         Task updatedTask = taskRepository.save(task);
@@ -124,16 +135,42 @@ public class TaskService {
             for (Integer ctGroupId : ctGroupIds) {
                 TaskAssignment assignment = new TaskAssignment(task.getId(), ctGroupId);
                 taskAssignmentRepository.save(assignment);
+
+                Optional<CtGroupUser> ct = ctGroupUserRepository.findById(ctGroupId);
+                ct.ifPresent(ctGroupUser -> {
+                    Integer groupId = ctGroupUser.getGroupId();
+
+                    // 🔔 Gửi TaskMessage dạng "updated"
+                    TaskGroupMessage message = new TaskGroupMessage("updated", updatedTask);
+                    messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
+                });
             }
         }  
         return updatedTask;
     }
 
     public void deleteTask(Integer id) {
-        // Xóa tất cả các assignment liên quan trước
-        taskAssignmentRepository.deleteByTaskId(id);
-        
-        // Xóa task
-        taskRepository.deleteById(id);
+        Optional<Task> taskOpt = taskRepository.findById(id);
+        if (taskOpt.isPresent()) {
+            Task task = taskOpt.get();
+
+            // Lấy groupId thông qua assignment
+            List<TaskAssignment> assignments = taskAssignmentRepository.findByTaskId(id);
+            for (TaskAssignment assignment : assignments) {
+                Optional<CtGroupUser> ct = ctGroupUserRepository.findById(assignment.getCtGroupId());
+                ct.ifPresent(ctGroupUser -> {
+                    Integer groupId = ctGroupUser.getGroupId();
+
+                    // 🔔 Gửi TaskMessage dạng "deleted"
+                    TaskGroupMessage message = new TaskGroupMessage("deleted", task);
+                    messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
+                });
+            }
+            // Xóa tất cả các assignment liên quan trước
+            taskAssignmentRepository.deleteByTaskId(id);
+            
+            // Xóa task
+            taskRepository.deleteById(id);
+        }
     }
 }

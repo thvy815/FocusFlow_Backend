@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class UserController {
         userService.resetAutoIncrement();
     }
 
-     // API để tạo người dùng mới 
+    // API để tạo người dùng mới 
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
         return userService.saveUser(user);
@@ -59,6 +60,21 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    // API để cập nhật thông tin người dùng (email lấy từ JWT)
+    @PutMapping("/update")
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUserData) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User existingUser = userService.getUserByEmail(email);
+
+        // Cập nhật các trường được cho phép
+        existingUser.setFullName(updatedUserData.getFullName());
+        existingUser.setUsername(updatedUserData.getUsername());
+        existingUser.setAvatarUrl(updatedUserData.getAvatarUrl()); // nếu có avatar
+        
+        User updatedUser = userService.saveUser(existingUser);
+        return ResponseEntity.ok(updatedUser);
     }
 
     // API để xóa người dùng (email tự lấy từ JWT)

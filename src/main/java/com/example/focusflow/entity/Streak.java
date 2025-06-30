@@ -1,7 +1,6 @@
 package com.example.focusflow.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "streak")
@@ -15,7 +14,7 @@ public class Streak {
     private Integer userId;
 
     @Column(name = "last_valid_date")
-    private LocalDate lastValidDate;
+    private String lastValidDate;
 
     @Column(name = "current_streak")
     private int currentStreak;
@@ -27,7 +26,7 @@ public class Streak {
     public Streak() {
     }
 
-    public Streak(Integer userId, LocalDate lastValidDate, int currentStreak, int maxStreak) {
+    public Streak(Integer userId, String lastValidDate, int currentStreak, int maxStreak) {
         this.userId = userId;
         this.lastValidDate = lastValidDate;
         this.currentStreak = currentStreak;
@@ -51,11 +50,11 @@ public class Streak {
         this.userId = userId;
     }
 
-    public LocalDate getLastValidDate() {
+    public String getLastValidDate() {
         return lastValidDate;
     }
 
-    public void setLastValidDate(LocalDate lastValidDate) {
+    public void setLastValidDate(String lastValidDate) {
         this.lastValidDate = lastValidDate;
     }
 

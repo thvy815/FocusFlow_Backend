@@ -1,69 +1,71 @@
 package com.example.focusflow.service;
 
-
 import com.example.focusflow.entity.Streak;
-import com.example.focusflow.entity.Task;
 import com.example.focusflow.repository.StreakRepository;
-import com.example.focusflow.repository.TaskRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class StreakService {
-private final StreakRepository streakRepository;
-    //private final TaskRepository taskRepository;
-    private final TaskService taskService;
+    private final StreakRepository streakRepository;
 
-    public StreakService(StreakRepository streakRepository, TaskService taskService) {
+    public StreakService(StreakRepository streakRepository) {
         this.streakRepository = streakRepository;
-        this.taskService = taskService;
     }
 
-    public Streak updateStreakIfUserCompletedToday(Integer userId) {
-    LocalDate today = LocalDate.now();
-
-    // ✅ Dùng taskService để kiểm tra task đã hoàn thành hôm nay
-    if (!taskService.hasCompletedAnyTaskToday(userId)) {
-        return null;
+    public Streak getStreakByUserId(Integer userId) {
+        return streakRepository.findByUserId(userId).orElse(null);
     }
 
-    Streak streak = streakRepository.findByUserId(userId).orElseGet(() -> {
-        Streak s = new Streak();
-        s.setUserId(userId);
-        s.setCurrentStreak(0);
-        s.setMaxStreak(0);
-        return s;
-    });
+    public void updateStreak(Integer userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate today = LocalDate.now();
 
-    if (streak.getLastValidDate() != null) {
-        if (streak.getLastValidDate().plusDays(1).equals(today)) {
-            streak.setCurrentStreak(streak.getCurrentStreak() + 1);
-        } else if (!streak.getLastValidDate().equals(today)) {
-            if (streak.getCurrentStreak() > streak.getMaxStreak()) {
-                streak.setMaxStreak(streak.getCurrentStreak());
+        Streak streak = streakRepository.findByUserId(userId).orElseGet(() -> {
+            Streak s = new Streak();
+            s.setUserId(userId);
+            s.setCurrentStreak(0);
+            s.setMaxStreak(0);
+            s.setLastValidDate(null);
+            return s;
+        });
+
+        String lastDateStr = streak.getLastValidDate();
+        if (lastDateStr != null) {
+            LocalDate lastDate = LocalDate.parse(lastDateStr, formatter);
+            long daysBetween = ChronoUnit.DAYS.between(lastDate, today);
+
+            if (daysBetween == 1) {
+                streak.setCurrentStreak(streak.getCurrentStreak() + 1);
+            } else if (daysBetween > 1) {
+                streak.setCurrentStreak(1);
+            } else {
+                // Cùng ngày → đã tính rồi
+                return;
             }
+        } else {
+            // lần đầu hoàn thành
             streak.setCurrentStreak(1);
         }
-    } else {
-        streak.setCurrentStreak(1);
+
+        streak.setLastValidDate(today.format(formatter));
+        streak.setMaxStreak(Math.max(streak.getCurrentStreak(), streak.getMaxStreak()));
+        streakRepository.save(streak);
     }
 
-    streak.setLastValidDate(today);
-    return streakRepository.save(streak);
-}
-public List<String> getCompletedStreakDates(Integer userId) {
-    List<Task> tasks = taskService.getAllTasksRelatedToUser(userId);
-    return tasks.stream()
-        .filter(t -> Boolean.TRUE.equals(t.getIsCompleted()))
-        .map(Task::getDueDate)
-        .distinct()
-        .toList();
-}
+    public void resetStreak(Integer userId) {
+        Streak streak = streakRepository.findByUserId(userId).orElseGet(() -> {
+            Streak s = new Streak();
+            s.setUserId(userId);
+            return s;
+        });
 
-
+        streak.setCurrentStreak(0);
+        streak.setMaxStreak(0);
+        streak.setLastValidDate(null);
+        streakRepository.save(streak);
+    }
 }

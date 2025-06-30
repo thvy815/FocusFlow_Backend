@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.focusflow.entity.Task;
 import com.example.focusflow.entity.User;
 import com.example.focusflow.model.TaskGroupRequest;
+import com.example.focusflow.service.StreakService;
 import com.example.focusflow.service.TaskService;
 
 @RestController
@@ -23,9 +24,11 @@ import com.example.focusflow.service.TaskService;
 public class TaskController {
 
     private final TaskService taskService;
+    private final StreakService streakService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, StreakService streakService) {
         this.taskService = taskService;
+        this.streakService = streakService;
     }
 
     // GET task cá nhân + nhóm liên quan
@@ -86,11 +89,19 @@ public class TaskController {
         );
         task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
 
+        Task updatedTask;
         if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
-            return taskService.updateTask(task); // chỉ update task
+            updatedTask = taskService.updateTask(task); // chỉ update task
         } else {
-            return taskService.updateTask(task, dto.ctGroupIds); // update task + phân công
+            updatedTask = taskService.updateTask(task, dto.ctGroupIds); // update task + phân công
         }
+
+        // 🔥 Nếu task được đánh dấu hoàn thành → cập nhật streak
+        if (task.getIsCompleted()) {
+            streakService.updateStreak(dto.userId);
+        }
+
+        return updatedTask;
     }
 
     @DeleteMapping("/{id}")
