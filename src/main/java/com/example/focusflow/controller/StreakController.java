@@ -16,7 +16,7 @@ public class StreakController {
 
     }
 
-    // ✅ API: Lấy streak hiện tại của user
+    // API: Lấy streak hiện tại của user
     @GetMapping("/{userId}")
     public ResponseEntity<Streak> getStreakByUser(@PathVariable Integer userId) {
         Streak streak = streakService.getStreakByUserId(userId);
@@ -26,7 +26,7 @@ public class StreakController {
         return ResponseEntity.ok(streak);
     }
 
-    // ✅ (Tuỳ chọn) API: reset streak (cho dev, test hoặc người dùng muốn reset)
+    // (Tuỳ chọn) API: reset streak (cho dev, test hoặc người dùng muốn reset)
     @PostMapping("/{userId}/reset")
     public ResponseEntity<Void> resetStreak(@PathVariable Integer userId) {
         streakService.resetStreak(userId);

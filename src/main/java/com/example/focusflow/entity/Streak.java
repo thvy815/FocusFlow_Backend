@@ -1,5 +1,8 @@
 package com.example.focusflow.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +24,11 @@ public class Streak {
 
     @Column(name = "max_streak")
     private int maxStreak;
+
+    @ElementCollection
+    @CollectionTable(name = "streak_valid_dates", joinColumns = @JoinColumn(name = "streak_id"))
+    @Column(name = "valid_date")
+    private List<String> validDates = new ArrayList<>();
 
     // Constructors
     public Streak() {
@@ -72,5 +80,13 @@ public class Streak {
 
     public void setMaxStreak(int maxStreak) {
         this.maxStreak = maxStreak;
+    }
+
+    public List<String> getValidDates() {
+        return validDates;
+    }
+
+    public void setValidDates(List<String> validDates) {
+        this.validDates = validDates;
     }
 }

@@ -75,6 +75,16 @@ public class TaskController {
 
     @PutMapping
     public Task updateTask(@RequestBody TaskGroupRequest dto) {
+        // Lấy task cũ từ DB
+        Optional<Task> optionalOldTask = taskService.getTaskById(dto.taskId);
+        boolean isCompletedChanged = false;
+        Boolean oldCompleted = null;
+
+        // So sánh trạng thái hoàn thành cũ
+        if (optionalOldTask.isPresent()) {
+            oldCompleted = optionalOldTask.get().getIsCompleted();
+        }
+
         Task task = new Task(
             dto.taskId,
             dto.userId,
@@ -89,6 +99,12 @@ public class TaskController {
         );
         task.setIsCompleted(dto.isCompleted != null && dto.isCompleted);
 
+        // So sánh nếu oldCompleted có giá trị
+        if (oldCompleted != null && oldCompleted != task.getIsCompleted()) {
+            isCompletedChanged = true;
+        }
+
+        // Cập nhật task
         Task updatedTask;
         if (dto.ctGroupIds == null || dto.ctGroupIds.isEmpty()) {
             updatedTask = taskService.updateTask(task); // chỉ update task
@@ -96,8 +112,8 @@ public class TaskController {
             updatedTask = taskService.updateTask(task, dto.ctGroupIds); // update task + phân công
         }
 
-        // 🔥 Nếu task được đánh dấu hoàn thành → cập nhật streak
-        if (task.getIsCompleted()) {
+        // Chỉ cập nhật streak nếu trạng thái hoàn thành thay đổi
+        if (isCompletedChanged) {
             streakService.updateStreak(dto.userId);
         }
 
