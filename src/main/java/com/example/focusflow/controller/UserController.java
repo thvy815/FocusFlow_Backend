@@ -103,14 +103,14 @@ public class UserController {
     }
 
     // Cập nhật số câu hỏi AI đã dùng
-    @PutMapping("/user/{userId}/ai-usage")
+    @PutMapping("/ai-usage")
     public ResponseEntity<String> incrementAiUsage(@PathVariable Integer userId) {
-        Optional<User> userOptional = userService.getUserById(userId);
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-
-        User user = userOptional.get();
+        
         user.incrementAiUsageCount();
         userService.saveUser(user);
 

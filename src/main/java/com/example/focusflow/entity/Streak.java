@@ -20,10 +20,10 @@ public class Streak {
     private String lastValidDate;
 
     @Column(name = "current_streak")
-    private int currentStreak;
+    private int currentStreak = 0;
 
     @Column(name = "max_streak")
-    private int maxStreak;
+    private int maxStreak = 0;
 
     @ElementCollection
     @CollectionTable(name = "streak_valid_dates", joinColumns = @JoinColumn(name = "streak_id"))
