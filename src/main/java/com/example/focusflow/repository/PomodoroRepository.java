@@ -9,7 +9,6 @@ import com.example.focusflow.entity.Pomodoro;
 
 @Repository
 public interface PomodoroRepository extends JpaRepository<Pomodoro, Integer> {
-    List<Pomodoro> findByUserIdAndIsDeletedFalse(Integer userId);
-
-    
+    List<Pomodoro> findByUserId(Integer userId);
+    void deleteByUserId(Integer userId);
 }

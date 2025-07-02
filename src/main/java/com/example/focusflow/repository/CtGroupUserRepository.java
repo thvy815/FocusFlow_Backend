@@ -24,8 +24,8 @@ public interface CtGroupUserRepository extends JpaRepository<CtGroupUser, Intege
     Integer findCtIdByUserIdAndGroupId(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     void deleteByGroupIdAndUserId(Integer groupId, Integer userId);
-    
     void deleteByGroupId(Integer groupId);
+    void deleteByUserId(Integer userId);
 
     @Query("SELECT c.id FROM CtGroupUser c WHERE c.groupId = :groupId AND c.userId IN (:userIds)")
     List<Integer> findCtIdsByUserIdsAndGroupId(@Param("userIds") List<Integer> userIds, @Param("groupId") Integer groupId);

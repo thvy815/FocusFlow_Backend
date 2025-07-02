@@ -43,11 +43,11 @@ public class PomodoroDetail {
     }
     // Getter, setter
 
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getID() {
+    public int getId() {
         return id;
     }
 

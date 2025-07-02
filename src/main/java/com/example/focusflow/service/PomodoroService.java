@@ -17,7 +17,7 @@ public class PomodoroService {
     }
 
     public List<Pomodoro> getAllPomodoroByUserId(Integer userId) {
-        return pomodoroRepository.findByUserIdAndIsDeletedFalse(userId);
+        return pomodoroRepository.findByUserId(userId);
     }
 
     public Optional<Pomodoro> getPomodoroById(Integer id) {
@@ -33,11 +33,11 @@ public class PomodoroService {
     }
 
     public Pomodoro updatePomodoro(Pomodoro pomodoro) {
-        Optional<Pomodoro> existing = pomodoroRepository.findById(pomodoro.getID());
+        Optional<Pomodoro> existing = pomodoroRepository.findById(pomodoro.getId());
         if (existing.isPresent()) {
             return pomodoroRepository.save(pomodoro);
         } else {
-            throw new RuntimeException("Pomodoro not found with ID: " + pomodoro.getID());
+            throw new RuntimeException("Pomodoro not found with ID: " + pomodoro.getId());
         }
     }
 }

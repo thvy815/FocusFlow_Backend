@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface StreakRepository extends JpaRepository<Streak, Integer> {
     Optional<Streak> findByUserId(Integer userId);
+    void deleteByUserId(Integer userId);
 }

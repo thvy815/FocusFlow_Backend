@@ -121,8 +121,20 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Integer id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<?> deleteTask(@PathVariable Integer id) {
+        try {
+            Optional<Task> taskOpt = taskService.getTaskById(id);
+            if (taskOpt.isEmpty()) {
+                return ResponseEntity.status(404).body("Task not found");
+            }
+
+            taskService.deleteTask(id); // Gọi service như cũ
+
+            return ResponseEntity.ok().build(); // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi
+            return ResponseEntity.status(500).body("Failed to delete task: " + e.getMessage());
+        }
     }
 
     @GetMapping("/group/{groupId}")

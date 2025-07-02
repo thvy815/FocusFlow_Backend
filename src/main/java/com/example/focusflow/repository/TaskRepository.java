@@ -63,5 +63,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
         AND t.dueDate = :dueDate
     """)
     List<Task> findByUserIdAndDueDate(@Param("userId") Integer userId, @Param("dueDate") String dueDate);
-
+    List<Task> findByUserId(Integer userId);
+    void deleteByUserId(Integer userId);
 }

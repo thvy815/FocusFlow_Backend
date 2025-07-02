@@ -22,7 +22,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 public class TaskService {
     
     private final TaskRepository taskRepository;
-    private TaskAssignmentRepository taskAssignmentRepository;
+    private final TaskAssignmentRepository taskAssignmentRepository;
     private final CtGroupUserRepository ctGroupUserRepository;
     private final UserRepository userRepository;
     private final SimpMessagingTemplate messagingTemplate;
@@ -133,6 +133,7 @@ public class TaskService {
         return updatedTask;
     }
 
+    @Transactional
     public void deleteTask(Integer id) {
         Optional<Task> taskOpt = taskRepository.findById(id);
         if (taskOpt.isPresent()) {

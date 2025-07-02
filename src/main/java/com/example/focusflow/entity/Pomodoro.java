@@ -53,11 +53,11 @@ public class Pomodoro {
     }
     // Getter, setter
 
-    public void setID(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 

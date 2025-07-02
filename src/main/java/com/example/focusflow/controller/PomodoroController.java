@@ -47,7 +47,7 @@ public class PomodoroController {
 
     @PutMapping("/{id}")
     public Pomodoro updatePomodoro(@PathVariable Integer id, @RequestBody Pomodoro pomodoro) {
-        pomodoro.setID(id); // đảm bảo đúng ID khi cập nhật
+        pomodoro.setId(id); // đảm bảo đúng ID khi cập nhật
         return pomodoroService.updatePomodoro(pomodoro);
     }
 }
