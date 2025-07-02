@@ -33,9 +33,6 @@ public class Pomodoro {
     @Column(name = "total_time") // tong thoi gian lam pomo
     private Integer totalTime;
 
-    @Column(name = "is_deleted", columnDefinition = "BOOLEAN") // pomo da xoa
-    private Boolean isDeleted = false;
-
     // Constructorsgetters, setters
     public Pomodoro() {
     }
@@ -49,7 +46,6 @@ public class Pomodoro {
         this.endAt = endAt;
         this.dueDate = dueDate;
         this.totalTime = totalTime;
-        this.isDeleted = false;
     }
     // Getter, setter
 
@@ -107,13 +103,5 @@ public class Pomodoro {
 
     public Integer getTotalTime() {
         return totalTime;
-    }
-
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public boolean getDeleted() {
-        return isDeleted;
     }
 }

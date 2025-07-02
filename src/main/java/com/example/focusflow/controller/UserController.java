@@ -102,6 +102,21 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    // Cập nhật số câu hỏi AI đã dùng
+    @PutMapping("/user/{userId}/ai-usage")
+    public ResponseEntity<String> incrementAiUsage(@PathVariable Integer userId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+
+        User user = userOptional.get();
+        user.incrementAiUsageCount();
+        userService.saveUser(user);
+
+        return ResponseEntity.ok("AI usage count updated");
+    }
+
     // API để xóa người dùng (email tự lấy từ JWT)
     @DeleteMapping("/now")
     public void deleteCurrentUser() {
