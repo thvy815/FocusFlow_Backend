@@ -48,7 +48,7 @@ public class User {
     private Long expireTime;
 
     @Column(name = "ai_usage_count")
-    private int aiUsageCount = 0;
+    private Integer aiUsageCount = 0;
 
     // Constructors
     public User() {
@@ -150,11 +150,11 @@ public class User {
         this.provider = provider;
     }
 
-    public int getAiUsageCount() {
+    public Integer getAiUsageCount() {
     return aiUsageCount;
     }
 
-    public void setAiUsageCount(int aiUsageCount) {
+    public void setAiUsageCount(Integer aiUsageCount) {
         this.aiUsageCount = aiUsageCount;
     }
 
