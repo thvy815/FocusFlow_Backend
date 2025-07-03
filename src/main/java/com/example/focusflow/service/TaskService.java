@@ -66,20 +66,31 @@ public class TaskService {
     // Tạo task nhóm + gán danh sách ctGroupId (phân công nhiều người)
     public Task createTask(Task task, List<Integer> ctGroupIds) {
         Task savedTask = taskRepository.save(task);
+        Integer groupId = null;
 
         if (ctGroupIds != null && !ctGroupIds.isEmpty()) {
+            // Lưu assignment mới
             for (Integer ctGroupId : ctGroupIds) {
                 taskAssignmentRepository.save(new TaskAssignment(savedTask.getId(), ctGroupId));
 
-                // 🔔 Gửi notify tới group
-                Optional<CtGroupUser> ct = ctGroupUserRepository.findById(ctGroupId);
-                ct.ifPresent(ctGroupUser -> {
-                    Integer groupId = ctGroupUser.getGroupId();
-                    
-                    // 🔔 Gửi TaskMessage dạng "created"
+                // Lấy groupId từ ctGroupUser
+                Optional<CtGroupUser> ctOpt = ctGroupUserRepository.findById(ctGroupId);
+                if (ctOpt.isPresent() && groupId == null) {
+                    groupId = ctOpt.get().getGroupId(); // Chỉ cần lấy 1 lần
+                }
+            }
+
+            if (groupId != null) {
+                // 🔁 1. Gửi đến toàn bộ thành viên theo userId để hiện notification
+                List<CtGroupUser> groupUsers = ctGroupUserRepository.findByGroupId(groupId);
+                for (CtGroupUser ctUser : groupUsers) {
                     TaskGroupMessage message = new TaskGroupMessage("created", savedTask);
-                    messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
-                });
+                    messagingTemplate.convertAndSend("/topic/user/" + ctUser.getUserId(), message);
+                }
+
+                // 🔁 2. Gửi đến nhóm để cập nhật UI task list
+                TaskGroupMessage groupMessage = new TaskGroupMessage("created", savedTask);
+                messagingTemplate.convertAndSend("/topic/group/" + groupId, groupMessage);
             }
         }
 
@@ -110,6 +121,25 @@ public class TaskService {
     public Task updateTask(Task task, List<Integer> ctGroupIds) {
         // Cập nhật thông tin task cơ bản
         Task updatedTask = taskRepository.save(task);
+
+        if (ctGroupIds == null || ctGroupIds.isEmpty()) {
+            // ✅ Chỉ gửi thông báo "updated" cho group chứa task
+
+            // Lấy danh sách phân công cũ → từ đó tìm groupId
+            List<TaskAssignment> oldAssignments = taskAssignmentRepository.findByTaskId(task.getId());
+            if (!oldAssignments.isEmpty()) {
+                // Lấy ctGroupId đầu tiên để truy ra groupId
+                Integer ctGroupId = oldAssignments.get(0).getCtGroupId();
+                Optional<CtGroupUser> ct = ctGroupUserRepository.findById(ctGroupId);
+                ct.ifPresent(ctGroupUser -> {
+                    Integer groupId = ctGroupUser.getGroupId();
+                    TaskGroupMessage message = new TaskGroupMessage("updated", updatedTask);
+                    messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
+                });
+            }
+
+            return updatedTask;
+        }
 
         if (ctGroupIds != null && !ctGroupIds.isEmpty()) {
             // Xóa tất cả phân công cũ của task này
