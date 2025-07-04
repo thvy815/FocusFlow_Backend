@@ -65,4 +65,10 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findByUserIdAndDueDate(@Param("userId") Integer userId, @Param("dueDate") String dueDate);
     List<Task> findByUserId(Integer userId);
     void deleteByUserId(Integer userId);
+
+    @Query("SELECT t FROM Task t " +
+       "JOIN TaskAssignment ta ON t.id = ta.taskId " +
+       "JOIN CtGroupUser cgu ON ta.ctGroupId = cgu.id " +
+       "WHERE cgu.groupId = :groupId")
+    List<Task> findTasksByGroupId(@Param("groupId") Integer groupId);
 }

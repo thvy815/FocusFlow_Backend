@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.focusflow.entity.Task;
 import com.example.focusflow.entity.User;
+import com.example.focusflow.model.TaskDTO;
 import com.example.focusflow.model.TaskGroupRequest;
 import com.example.focusflow.service.StreakService;
 import com.example.focusflow.service.TaskService;
@@ -140,5 +141,11 @@ public class TaskController {
     @GetMapping("/group/{groupId}")
     public List<Task> getTasksByGroup(@PathVariable Integer groupId) {
         return taskService.getTasksByGroupId(groupId);
+    }
+
+    @GetMapping("/group/{groupId}/with-users")
+    public ResponseEntity<List<TaskDTO>> getTasksWithUsers(@PathVariable Integer groupId) {
+        List<TaskDTO> tasks = taskService.getTasksWithAssignedUsersByGroupId(groupId);
+        return ResponseEntity.ok(tasks);
     }
 }

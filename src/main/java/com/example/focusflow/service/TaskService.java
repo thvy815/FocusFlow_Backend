@@ -2,6 +2,7 @@ package com.example.focusflow.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,9 @@ import com.example.focusflow.entity.CtGroupUser;
 import com.example.focusflow.entity.Task;
 import com.example.focusflow.entity.TaskAssignment;
 import com.example.focusflow.entity.User;
+import com.example.focusflow.model.TaskDTO;
 import com.example.focusflow.model.TaskGroupMessage;
+import com.example.focusflow.model.UserDTO;
 import com.example.focusflow.repository.CtGroupUserRepository;
 import com.example.focusflow.repository.TaskAssignmentRepository;
 import com.example.focusflow.repository.TaskRepository;
@@ -111,9 +114,35 @@ public class TaskService {
         return userRepository.findAllById(userIds);
     }
 
+    public List<TaskDTO> getTasksWithAssignedUsersByGroupId(Integer groupId) {
+        // Lấy tất cả task có liên kết gián tiếp với group thông qua task_assignment & ct_group_user
+        List<Task> tasks = taskRepository.findTasksByGroupId(groupId);
+
+        // Với mỗi task, lấy danh sách User được phân công thông qua bảng trung gian
+        return tasks.stream().map(task -> {
+            List<User> users = taskAssignmentRepository.findUsersAssignedToTask(task.getId());
+            List<UserDTO> userDTOs = users.stream().map(UserDTO::new).collect(Collectors.toList());
+            return new TaskDTO(task, userDTOs);
+        }).collect(Collectors.toList());
+    }
+
     // Cập nhật task cá nhân (không có ctGroupIds)
     public Task updateTask(Task task) {
-        return taskRepository.save(task);
+        Task updatedTask = taskRepository.save(task);
+
+        // Gửi WebSocket nếu là task nhóm
+        List<TaskAssignment> assignments = taskAssignmentRepository.findByTaskId(task.getId());
+        if (!assignments.isEmpty()) {
+            Integer ctGroupId = assignments.get(0).getCtGroupId();
+            Optional<CtGroupUser> ct = ctGroupUserRepository.findById(ctGroupId);
+            ct.ifPresent(ctGroupUser -> {
+                Integer groupId = ctGroupUser.getGroupId();
+                TaskGroupMessage message = new TaskGroupMessage("updated", updatedTask);
+                messagingTemplate.convertAndSend("/topic/group/" + groupId, message);
+            });
+        }
+
+        return updatedTask;
     }
 
     @Transactional
